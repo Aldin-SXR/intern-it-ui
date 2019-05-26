@@ -7,6 +7,8 @@ import Validator from "../utils/validationUtils";
 import CompanyApp from "../app/CompanyApp";
 import InternApp from "../app/InternApp";
 
+import Home from "../components/Home";
+
 import { createHashHistory } from 'history'
 import { SemanticToastContainer } from 'react-semantic-toasts';
 const history = createHashHistory();
@@ -28,13 +30,15 @@ const PrivateRoute = ({ components: [Component1, Component2], ...rest }) => (
     <Route
         {...rest}
         render={props => {
-            let token = localStorage.getItem("loginToken");
+            // let token = localStorage.getItem("loginToken");
+            let token = "intern";
             return (
                 token ? (
                     <ScrollToTop location={props.location}>
                         {
                             /* Route depending on admin privileges */
-                            Validator.isSuperuser(token) ? (
+                            // Validator.isSuperuser(token)
+                            token === "intern" ? (
                                 <InternApp history={props.history} component={<Component1 {...props} />} />
                             ) : (
                                 <CompanyApp history={props.history} component={<Component2 {...props} />} />
@@ -60,8 +64,8 @@ export default () => {
     return (
         <Router history={history} >
             <Switch>
-                {/* <PrivateRoute exact path="/" components={[ Home, TokenOverview ]} />
-                <PrivateRoute exact path="/tokens" components={[ TokenIssuance ]} />
+                <PrivateRoute exact path="/" components={[ Home, null ]} />
+                {/* <PrivateRoute exact path="/tokens" components={[ TokenIssuance ]} />
                 <PrivateRoute exact path="/investors" components={[ Investors ]} />
                 <PrivateRoute exact path="/profile" components={[ Profile, Profile ]} />
                 <Route exact path="/login" component={Login} /> */}
