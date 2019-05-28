@@ -1,11 +1,32 @@
 import React, { Component } from 'react';
-import { Image, Menu, Container, Icon, Popup, Grid, Sidebar, Segment, Header, Responsive } from 'semantic-ui-react'
+import { Image, Menu, Container, Icon, Popup, Grid, Sidebar, Segment, Header, Responsive, Search, ItemMeta } from 'semantic-ui-react'
 import '../css/App.css';
+import _ from "lodash";
+import faker from "faker";
 
+import state from "../initialState";
 import Validator from "../utils/validationUtils";
 import MenuSeparator from '../components/MenuSeparator';
 
 import logo from "./../img/logo.png";
+
+const initialState = { isLoading: false, results: [], value: '' }
+
+const getResults = () =>
+    _.times(5, () => ({
+        title: faker.name.jobTitle(),
+        description: faker.company.companyName(),
+        image: faker.image.avatar(),
+        price: faker.finance.amount(900, 4000, 2, '$'),
+    }))
+    
+let source = { };
+state.professionOptions.map(option => {
+    source[`${option.text}`] = {
+        name: option.text,
+        results: getResults()
+    }
+});
 
 class AdminApp extends Component {
     constructor(props) {
@@ -14,7 +35,8 @@ class AdminApp extends Component {
             activeItem: "home",
             name: "Aldin Kovačević",
             visible: true,
-            mobile: false
+            mobile: false,
+            isLoading: false, results: [], value: ''
         }
     }
 
@@ -53,8 +75,62 @@ class AdminApp extends Component {
     }
 
     handleComponentUpdate = () => {
-
+        let item = this.props.history.location.pathname;
+        switch (this.props.history.location.pathname) {
+            case '/home':
+                item = 'home'
+                break;
+            case '/profile':
+                item = 'profile';
+                break;
+            case '/rankings':
+                item = 'rankings';
+                break;
+            case '/skills':
+                item = 'skills';
+                break;
+            case '/offerings':
+                item = 'offerings';
+                break;
+            default:
+                item = 'home'
+        }
+        /* Set active route and user name*/
+        this.setState({
+            activeItem: item
+        });
     }
+
+
+    handleResultSelect = (e, { result }) => this.setState({ value: result.title })
+
+    handleSearchChange = (e, { value }) => {
+        this.setState({ isLoading: true, value })
+
+        setTimeout(() => {
+            if (this.state.value.length < 1) return this.setState(initialState)
+
+            const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
+            const isMatch = result => re.test(result.title)
+
+            const filteredResults = _.reduce(
+                source,
+                (memo, data, name) => {
+                    const results = _.filter(data.results, isMatch)
+                    if (results.length) memo[name] = { name, results } // eslint-disable-line no-param-reassign
+
+                    return memo
+                },
+                {},
+            )
+
+            this.setState({
+                isLoading: false,
+                results: filteredResults,
+            })
+        }, 300)
+    }
+
 
     componentDidUpdate = (prevProps) => {
 
@@ -66,32 +142,17 @@ class AdminApp extends Component {
 
     /* Log out */
     logOut = () => {
-
+        this.props.history.push("/login")
     }
 
     /* Menu route changes */
-    handleRouteChange = (e, { name }) => {
+    handleRouteChange = (name) => {
         this.setState({
-            activeItem: name
+            activeItem: name,
+            visible: this.state.mobile ? false : true
         });
-        // /* Switch to page */
-        // switch (e.target.text) {
-        //     case "Home":
-        //         this.props.history.push("/");
-        //         break;
-        //     case "Issue Tokens":
-        //         this.props.history.push("/tokens");
-        //         break;
-        //     case "Investors":
-        //         this.props.history.push("/investors");
-        //         break;
-        //     case "Profile":
-        //     case this.state.name:
-        //         this.props.history.push("/profile");
-        //         break;
-        //     default:
-        //         this.props.history.push("/");
-        // }
+        /* Switch to page */
+        this.props.history.push(`/${name}`);
     }
 
     setUserName = () => {
@@ -101,7 +162,7 @@ class AdminApp extends Component {
 
     render() {
         const { component } = this.props;
-        const { activeItem } = this.state;
+        const { activeItem, isLoading, value, results } = this.state;
         return (
             <div className="App">
                 <Sidebar.Pushable style={{ transform: "none" }}>
@@ -131,6 +192,21 @@ class AdminApp extends Component {
                                 <Image src={logo} size="mini" style={{ marginRight: '1em' }} />
                                 Intern.IT | Internship made simple
                             </Menu.Item>
+                            <Menu.Item>
+                                <Search
+                                    category
+                                    loading={isLoading}
+                                    fluid
+                                    placeholder="Search for job offers..."
+                                    onResultSelect={this.handleResultSelect}
+                                    onSearchChange={_.debounce(this.handleSearchChange, 500, {
+                                        leading: true,
+                                    })}
+                                    results={results}
+                                    value={value}
+                                    {...this.props}
+                                />
+                            </Menu.Item>
                             <Menu.Menu position="right">
                                 <Menu.Item active={activeItem === "profile"} name="profile" onClick={this.handleRouteChange}>
                                     <Icon name="user" />
@@ -148,12 +224,14 @@ class AdminApp extends Component {
                         visible={this.state.visible}
                         width="thin"
                         compact
+                        pointing
+                        style={{ overflow: "hidden" }}
                     >
                         <Responsive minWidth={768}>
                             {/* Placeholder segment */}
                             <Menu.Item>
                                 <Grid>
-                                    <Grid.Column only="computer tablet" style={{ height: '4.5em' }}></Grid.Column>
+                                    <Grid.Column only="computer tablet" style={{ height: '4.7em' }}></Grid.Column>
                                 </Grid>
                             </Menu.Item>
                         </Responsive>
@@ -165,27 +243,36 @@ class AdminApp extends Component {
                                 </Grid>
                             </Menu.Item>
                         </Responsive>
-                        <Menu.Item as='a' >
+                        <Menu.Item as='a' active={activeItem === "home"}
+                            onClick={() => this.handleRouteChange("home")}
+                        >
                             <Icon name='home' />
                             Home
                         </Menu.Item>
-                        <Menu.Item as='a'>
+                        <Menu.Item as='a' active={activeItem === "offerings"}
+                            onClick={() => this.handleRouteChange("offerings")}
+                        >
                             <Icon name='suitcase' />
                             Job Offerings
                         </Menu.Item>
-                        <Menu.Item as='a'>
+                        <Menu.Item as='a' active={activeItem === "skills"}
+                            onClick={() => this.handleRouteChange("skills")}
+                        >
                             <Icon name='tasks' />
                             Skill Center
                         </Menu.Item>
-                        <Menu.Item as='a'>
+                        <Menu.Item as='a' active={activeItem === "rankings"}
+                            onClick={() => this.handleRouteChange("rankings")}>
                             <Icon name='sitemap' />
                             Best of the Best
                         </Menu.Item>
-                        <Menu.Item as='a'>
+                        <Menu.Item as='a' active={activeItem === "profile"}
+                            onClick={() => this.handleRouteChange("profile")}
+                        >
                             <Icon name='user' />
                             Profile
                         </Menu.Item>
-                        <Menu.Item as='a'>
+                        <Menu.Item as='a' onClick={this.logOut}>
                             <Icon name='power' />
                             Log Out
                         </Menu.Item>

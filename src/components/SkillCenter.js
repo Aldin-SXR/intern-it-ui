@@ -1,18 +1,18 @@
 import React, { Component } from 'react'
-import { Grid, Header, Icon, Divider } from 'semantic-ui-react';
+import { Icon, Divider, Grid, Header } from 'semantic-ui-react';
 
-class Profile extends Component {
+class SkillCenter extends Component {
     render() {
         return (
-            <div id="profile">
+            <div id="skill-center">
                 <Grid stackable padded>
                     <Grid.Row>
                         <Grid.Column>
                             <Header as='h1'>
-                                <Icon name='user' />
+                                <Icon name='tasks' />
                                 <Header.Content>
-                                    Profile
-                                    <Header.Subheader>View and edit your personal information.</Header.Subheader>
+                                    Skill Center
+                                    <Header.Subheader>Gain new valuable skills and increase your market value.</Header.Subheader>
                                 </Header.Content>
                             </Header>
                         </Grid.Column>
@@ -24,4 +24,4 @@ class Profile extends Component {
     }
 }
 
-export default Profile;
+export default SkillCenter;
