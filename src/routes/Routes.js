@@ -7,6 +7,10 @@ import Validator from "../utils/validationUtils";
 import CompanyApp from "../app/CompanyApp";
 import InternApp from "../app/InternApp";
 import Home from "../components/Home";
+import BestOfTheBest from "../components/BestOfTheBest";
+import Profile from "../components/Profile";
+import SkillCenter from "../components/SkillCenter";
+import JobOfferings from "../components/JobOfferings";
 
 import { createHashHistory } from "history";
 import { SemanticToastContainer } from "react-semantic-toasts";
@@ -66,7 +70,11 @@ export default () => {
             <Switch>
                 <PrivateRoute exact path="/home" components={[Home, null]} />
                 <Route exact path="/" component={LandingPage} />
-                <Route exact path="/login" component={Login} />               
+                <Route exact path="/login" component={Login} />          
+                <PrivateRoute exact path="/rankings" components={[ BestOfTheBest, null ]}/>     
+                <PrivateRoute exact path="/offerings" components={[ JobOfferings, null ]}/>     
+                <PrivateRoute exact path="/profile" components={[ Profile, null ]}/>     
+                <PrivateRoute exact path="/skills" components={[ SkillCenter, null ]}/>     
             </Switch>
         </Router >
     );
