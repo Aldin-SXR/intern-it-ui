@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { Route, Switch, Router, Redirect } from "react-router-dom";
 
-import Validator from "../utils/validationUtils";
-
 /* Admin components */
 import CompanyApp from "../app/CompanyApp";
 import InternApp from "../app/InternApp";
@@ -33,29 +31,31 @@ const PrivateRoute = ({ components: [Component1, Component2], ...rest }) => (
         render={props => {
             // let token = localStorage.getItem("loginToken");
             let token = "intern";
-            return (
-                token ? (
-                    <ScrollToTop location={props.location}>
-                        {
-                            /* Route depending on admin privileges */
-                            // Validator.isSuperuser(token)
-                            token === "intern" ? (
-                                <InternApp history={props.history} component={<Component1 {...props} />} />
-                            ) : (
-                                    <CompanyApp history={props.history} component={<Component2 {...props} />} />
-                                )
-                        }
-                        <SemanticToastContainer position="top-right" />
-                    </ScrollToTop>
-                ) : (
-                        <Redirect
-                            to={{
-                                pathname: "/login",
-                                state: { from: props.location }
-                            }}
+            return token ? (
+                <ScrollToTop location={props.location}>
+                    {/* Route depending on admin privileges */
+                    // Validator.isSuperuser(token)
+                    token === "intern" ? (
+                        <InternApp
+                            history={props.history}
+                            component={<Component1 {...props} />}
                         />
-                    )
-            )
+                    ) : (
+                        <CompanyApp
+                            history={props.history}
+                            component={<Component2 {...props} />}
+                        />
+                    )}
+                    <SemanticToastContainer position="top-right" />
+                </ScrollToTop>
+            ) : (
+                <Redirect
+                    to={{
+                        pathname: "/login",
+                        state: { from: props.location }
+                    }}
+                />
+            );
         }}
     />
 );
@@ -66,8 +66,8 @@ export default () => {
             <Switch>
                 <PrivateRoute exact path="/home" components={[Home, null]} />
                 <Route exact path="/" component={LandingPage} />
-                <Route exact path="/login" component={Login} />               
+                <Route exact path="/login" component={Login} />
             </Switch>
-        </Router >
+        </Router>
     );
 };

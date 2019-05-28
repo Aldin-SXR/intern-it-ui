@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import {
     Button,
     Container,
-    Divider,
     Grid,
     Header,
     Icon,
@@ -19,6 +18,7 @@ import {
 import AvatarStudent from "../img/avatar_student-min.jpeg";
 import AvatarCompany from "../img/avatar_company-min.jpeg";
 import DescriptionImage from "../img/landing_desc.jpg";
+import Contact from "./Contact";
 
 // Heads up!
 // We using React Static to prerender our docs with server side rendering, this is a quite simple solution.
@@ -105,7 +105,10 @@ HomepageHeading.propTypes = {
 };
 
 class DesktopContainer extends Component {
-    state = {};
+    state = {
+        fixed: null,
+        active: "home"
+    };
 
     hideFixedMenu = () => this.setState({ fixed: false });
     showFixedMenu = () => this.setState({ fixed: true });
@@ -113,6 +116,10 @@ class DesktopContainer extends Component {
     redirectTo(route) {
         window.location.replace(window.location.origin + "/#" + route);
     }
+
+    setActive = state => {
+        this.setState({ active: state });
+    };
 
     render() {
         const { children } = this.props;
@@ -132,11 +139,16 @@ class DesktopContainer extends Component {
                         inverted
                         textAlign="center"
                         style={{
-                            minHeight: 700,
-                            padding: "1em 0em"
+                            minHeight: this.state.active === "home" ? 700 : 60,
+                            padding:
+                                this.state.active === "home" ? "1em 0em" : null
                         }}
                         vertical
-                        id="landing_header"
+                        id={
+                            this.state.active === "home"
+                                ? "landing_header"
+                                : null
+                        }
                     >
                         <div className="layer">
                             <Menu
@@ -147,11 +159,34 @@ class DesktopContainer extends Component {
                                 size="large"
                             >
                                 <Container>
-                                    <Menu.Item as="a" active>
+                                    <Menu.Item
+                                        as="a"
+                                        active={this.state.active === "home"}
+                                        onClick={() => {
+                                            this.setActive("home");
+                                        }}
+                                    >
                                         Home
                                     </Menu.Item>
-                                    <Menu.Item as="a">Contact</Menu.Item>
-                                    <Menu.Item as="a">About</Menu.Item>
+                                    <Menu.Item
+                                        as="a"
+                                        active={this.state.active === "contact"}
+                                        onClick={() => {
+                                            this.setActive("contact");
+                                        }}
+                                    >
+                                        Contact
+                                    </Menu.Item>
+                                    <Menu.Item
+                                        as="a"
+                                        name="about"
+                                        active={this.state.active === "about"}
+                                        onClick={() => {
+                                            this.setActive("about");
+                                        }}
+                                    >
+                                        About
+                                    </Menu.Item>
                                     <Menu.Item position="right">
                                         <Button
                                             as="a"
@@ -173,12 +208,23 @@ class DesktopContainer extends Component {
                                     </Menu.Item>
                                 </Container>
                             </Menu>
-                            <HomepageHeading />
+                            {this.state.active === "home" && (
+                                <HomepageHeading />
+                            )}
                         </div>
                     </Segment>
                 </Visibility>
-
-                {children}
+                {this.state.active === "home" ? (
+                    children
+                ) : (
+                    <div>
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <Contact />
+                    </div>
+                )}
             </Responsive>
         );
     }
@@ -189,7 +235,18 @@ DesktopContainer.propTypes = {
 };
 
 class MobileContainer extends Component {
-    state = {};
+    state = {
+        sidebarOpened: null,
+        active: "home"
+    };
+
+    redirectTo(route) {
+        window.location.replace(window.location.origin + "/#" + route);
+    }
+
+    setActive = state => {
+        this.setState({ active: state });
+    };
 
     handleSidebarHide = () => this.setState({ sidebarOpened: false });
 
@@ -213,11 +270,33 @@ class MobileContainer extends Component {
                     vertical
                     visible={sidebarOpened}
                 >
-                    <Menu.Item as="a" active>
+                    <Menu.Item
+                        as="a"
+                        active={this.state.active === "home"}
+                        onClick={() => {
+                            this.setActive("home");
+                        }}
+                    >
                         Home
                     </Menu.Item>
-                    <Menu.Item as="a">Contact</Menu.Item>
-                    <Menu.Item as="a">About</Menu.Item>
+                    <Menu.Item
+                        as="a"
+                        active={this.state.active === "contact"}
+                        onClick={() => {
+                            this.setActive("contact");
+                        }}
+                    >
+                        Contact
+                    </Menu.Item>
+                    <Menu.Item
+                        as="a"
+                        active={this.state.active === "about"}
+                        onClick={() => {
+                            this.setActive("about");
+                        }}
+                    >
+                        About
+                    </Menu.Item>
                     <Menu.Item
                         as="a"
                         onClick={() => {
