@@ -208,7 +208,7 @@ class AdminApp extends Component {
                                 />
                             </Menu.Item>
                             <Menu.Menu position="right">
-                                <Menu.Item active={activeItem === "profile"} name="profile" onClick={this.handleRouteChange}>
+                                <Menu.Item name="profile" onClick={this.handleRouteChange}>
                                     <Icon name="user" />
                                     &nbsp; {this.state.name}
                                 </Menu.Item>
