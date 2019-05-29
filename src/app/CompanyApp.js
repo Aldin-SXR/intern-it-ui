@@ -1,8 +1,5 @@
-import React, { Component } from 'react';
-import {Image, Menu, Container, Popup, Icon } from 'semantic-ui-react'
-
-import Validator from "../utils/validationUtils";
-import MenuSeparator from '../components/MenuSeparator';
+import React, { Component } from "react";
+import MenuSeparator from "../components/MenuSeparator";
 
 class App extends Component {
     constructor(props) {
@@ -10,16 +7,16 @@ class App extends Component {
         this.state = {
             activeItem: "overview",
             name: ""
-        }
+        };
     }
 
     componentWillReceiveProps = () => {
         this.handleComponentUpdate();
-    }
-    
+    };
+
     componentDidMount = () => {
         this.handleComponentUpdate();
-    }
+    };
 
     handleComponentUpdate = () => {
         // let item;
@@ -30,7 +27,7 @@ class App extends Component {
         //     case '/profile':
         //         item = 'profile';
         //         break;
-        //     default: 
+        //     default:
         //         item = 'overview'
         // }
         // /* Set active route and user name*/
@@ -39,21 +36,17 @@ class App extends Component {
         //     name: this.setUserName()
         // });
         // this.logOutIfInvalid();
-    }
+    };
 
-    componentDidUpdate = (prevProps) => {
+    componentDidUpdate = prevProps => {};
 
-    }
-
-    logOutIfInvalid = () => {
-
-    }
+    logOutIfInvalid = () => {};
 
     /* Log out */
     logOut = () => {
         // localStorage.removeItem("loginToken");
         // this.props.history.push('/login');
-    }
+    };
 
     /* Menu route changes */
     handleRouteChange = (e, { name }) => {
@@ -72,20 +65,19 @@ class App extends Component {
         //     default:
         //         this.props.history.push("/");
         // }
-    }
+    };
 
     setUserName = () => {
         // let token = localStorage.getItem("loginToken");
         // return Validator.getUserName(token);
-    }
+    };
 
     render() {
         const { component } = this.props;
-        const { activeItem } = this.state;
         return (
             <div className="App">
-                <MenuSeparator app="company"/>
-                { component }
+                <MenuSeparator app="company" />
+                {component}
             </div>
         );
     }
