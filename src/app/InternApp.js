@@ -6,7 +6,8 @@ import {
     Grid,
     Sidebar,
     Responsive,
-    Search
+    Search,
+    Label
 } from "semantic-ui-react";
 import "../css/App.css";
 import _ from "lodash";
@@ -174,7 +175,7 @@ class AdminApp extends Component {
             <div className="App">
                 <Sidebar.Pushable style={{ transform: "none" }}>
                     <Responsive maxWidth={768}>
-                        <Menu fixed="top" borderless style={{ zIndex: 200 }}>
+                        <Menu fixed="top" borderless style={{ zIndex: 200 }} fluid>
                             <Menu.Item
                                 as="a"
                                 header
@@ -185,10 +186,10 @@ class AdminApp extends Component {
                             <Menu.Menu position="right">
                                 <Menu.Item
                                     name="profile"
-                                    onClick={() => this.handleRouteChange("home")}
+                                    onClick={() => this.handleRouteChange("profile")}
                                 >
                                     <Icon name="user" />
-                                    &nbsp; {this.state.name}
+                                    &nbsp; {this.state.name}<Label basic color="red" size="small">350 SP</Label>
                                 </Menu.Item>
                                 <Menu.Item>
                                     <Icon name="power" />
@@ -245,6 +246,9 @@ class AdminApp extends Component {
                                     <Icon name="user" />
                                     &nbsp; {this.state.name}
                                 </Menu.Item>
+                                <Menu.Item compact>
+                                    <Label basic color="red" size="large">350 SP</Label>
+                                </Menu.Item>
                                 <Menu.Item as="a" title="Log out" onClick={this.logOut}>
                                     <Icon name="power off" />
                                 </Menu.Item>
@@ -261,7 +265,7 @@ class AdminApp extends Component {
                         width="thin"
                         compact
                         pointing
-                        style={{ overflow: "hidden" }}
+                        style={{ overflow: "hidden", position: "fixed" }}
                     >
                         <Responsive minWidth={768}>
                             {/* Placeholder segment */}

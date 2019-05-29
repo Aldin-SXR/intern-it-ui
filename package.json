@@ -16,6 +16,7 @@
         "react-router-dom": "^5.0.0",
         "react-scripts": "3.0.0",
         "react-semantic-toasts": "^0.5.2",
+        "react-semantic-ui-range": "^0.7.0",
         "recharts": "^1.5.0",
         "redux": "^4.0.1",
         "redux-thunk": "^2.3.0",

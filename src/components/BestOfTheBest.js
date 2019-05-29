@@ -7,7 +7,8 @@ import {
     Segment,
     Divider,
     Form,
-    Dropdown
+    Dropdown,
+    Button
 } from "semantic-ui-react";
 import { DatesRangeInput } from "semantic-ui-calendar-react";
 
@@ -144,6 +145,7 @@ class BestOfTheBest extends Component {
                                         placeholder="Start date - End date"
                                         value={this.state.datesRange}
                                         iconPosition="left"
+                                        dateFormat="DD MMM YYYY"
                                         onChange={this.handleDateRangeChange}
                                         clearable
                                         closable
