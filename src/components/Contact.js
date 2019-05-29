@@ -5,7 +5,9 @@ import {
     Segment,
     Button,
     Container,
-    Header
+    Header,
+    Icon,
+    Divider
 } from "semantic-ui-react";
 
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
@@ -76,13 +78,21 @@ class Contact extends Component {
         return (
             <div>
                 <Container fluid>
-                    <Header as="h1" color="black" textAlign="center">
-                        Contact Us
-                    </Header>
                     <SemanticToastContainer position="top-right" />
-
-                    <Grid stackable columns={2} divided>
+                    <Grid stackable divided padded>
                         <Grid.Row>
+                            <Grid.Column style={{ textAlign: "-webkit-center" }}>
+                                <Header as='h1'>
+                                    <Icon name="comment alternate outline" />
+                                    <Header.Content>
+                                        Contact Us
+                                    <Header.Subheader>Get in touch with our team.</Header.Subheader>
+                                    </Header.Content>
+                                </Header>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Divider />
+                        <Grid.Row columns={2}>
                             <Grid.Column>
                                 <Map
                                     style={{

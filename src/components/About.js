@@ -1,18 +1,27 @@
 import React from "react";
 import AboutImage from "../img/logo_transparent.png";
-import { Container, Header, Grid, Image } from "semantic-ui-react";
+import { Container, Header, Grid, Image, Icon, Divider } from "semantic-ui-react";
 
 const About = props => {
     return (
         <div>
             <Container fluid>
-                <Header as="h1" color="black" textAlign="center">
-                    About Us
-                </Header>
                 <br />
                 <br />
-                <Grid stackable columns={2} divided centered>
+                <Grid stackable divided centered padded>
                     <Grid.Row>
+                        <Grid.Column style={{ textAlign: "-webkit-center" }}>
+                            <Header as='h1'>
+                                <Icon name="info" />
+                                <Header.Content>
+                                    About Us
+                                    <Header.Subheader>Get acquainted with our vision.</Header.Subheader>
+                                </Header.Content>
+                            </Header>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Divider />
+                    <Grid.Row columns={2}>
                         <Grid.Column width={3}>
                             <Image src={AboutImage} size="large" centered />
                         </Grid.Column>
@@ -36,7 +45,7 @@ const About = props => {
                                             width: "1px"
                                         }}
                                     />
-                                    <Grid.Column width={15}>
+                                    <Grid.Column width={15} textAlign="center">
                                         <Header as="h1">
                                             <i>
                                                 "Creativity is just connecting

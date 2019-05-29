@@ -250,7 +250,7 @@ class MobileContainer extends Component {
     }
 
     setActive = state => {
-        this.setState({ active: state });
+        this.setState({ active: state, sidebarOpened: false });
     };
 
     handleSidebarHide = () => this.setState({ sidebarOpened: false });
