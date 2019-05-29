@@ -75,7 +75,7 @@ class Contact extends Component {
 
         return (
             <div>
-                <Container>
+                <Container fluid>
                     <Header as="h1" color="black" textAlign="center">
                         Contact Us
                     </Header>

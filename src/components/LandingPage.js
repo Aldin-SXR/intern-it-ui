@@ -19,6 +19,7 @@ import AvatarStudent from "../img/avatar_student-min.jpeg";
 import AvatarCompany from "../img/avatar_company-min.jpeg";
 import DescriptionImage from "../img/landing_desc.jpg";
 import Contact from "./Contact";
+import About from "./About";
 
 // Heads up!
 // We using React Static to prerender our docs with server side rendering, this is a quite simple solution.
@@ -222,7 +223,11 @@ class DesktopContainer extends Component {
                         <br />
                         <br />
                         <br />
-                        <Contact />
+                        {this.state.active === "contact" ? (
+                            <Contact />
+                        ) : (
+                            <About />
+                        )}
                     </div>
                 )}
             </Responsive>
@@ -312,7 +317,10 @@ class MobileContainer extends Component {
                     <Segment
                         inverted
                         textAlign="center"
-                        style={{ minHeight: 350, padding: "1em 0em" }}
+                        style={{
+                            minHeight: this.state.active === "home" ? 350 : 60,
+                            padding: "1em 0em"
+                        }}
                         vertical
                     >
                         <Container>
@@ -340,10 +348,26 @@ class MobileContainer extends Component {
                                 </Menu.Item>
                             </Menu>
                         </Container>
-                        <HomepageHeading mobile />
+                        {this.state.active === "home" && (
+                            <HomepageHeading mobile />
+                        )}
                     </Segment>
 
-                    {children}
+                    {this.state.active === "home" ? (
+                        children
+                    ) : (
+                        <div>
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            {this.state.active === "contact" ? (
+                                <Contact />
+                            ) : (
+                                <About />
+                            )}
+                        </div>
+                    )}
                 </Sidebar.Pusher>
             </Responsive>
         );
