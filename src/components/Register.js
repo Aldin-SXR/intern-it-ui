@@ -98,7 +98,7 @@ class Register extends Component {
                     <SemanticToastContainer position="top-right" />
                     <Menu fixed="top" stackable>
                         {/* <Container> */}
-                        <Menu.Item as="a" header>
+                        <Menu.Item as="a" header onClick={ () => { this.props.history.push("/") } }>
                             <Image
                                 src={logo}
                                 style={{ marginRight: "0.5em", width: "3em" }}

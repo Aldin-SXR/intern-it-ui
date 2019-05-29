@@ -247,7 +247,7 @@ class AdminApp extends Component {
                                     &nbsp; {this.state.name}
                                 </Menu.Item>
                                 <Menu.Item compact>
-                                    <Label basic color="red" size="large">350 SP</Label>
+                                    <Label basic color="red" size="large" title="My Skill Points">350 SP</Label>
                                 </Menu.Item>
                                 <Menu.Item as="a" title="Log out" onClick={this.logOut}>
                                     <Icon name="power off" />

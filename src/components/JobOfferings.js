@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Grid, Header, Icon, Divider, Dropdown, Form, Label, Segment, Card, Image, Button } from 'semantic-ui-react';
+import { Grid, Header, Icon, Divider, Dropdown, Form, Label, Segment, Card, Image, Button, Pagination, TransitionablePortal, Modal, Tab } from 'semantic-ui-react';
 import { DatesRangeInput } from 'semantic-ui-calendar-react';
 import { Slider } from "react-semantic-ui-range";
+import * as Toast from "../utils/toaster";
 
 import _ from "lodash";
 import Formatter from "../utils/formatUtils";
@@ -58,7 +59,15 @@ class Offerings extends Component {
         offerPics: [
             offer1, offer2, offer3, offer4,
             offer5, offer6, offer7
-        ]
+        ],
+        applyForOfferIsOpen: false,
+        formLoading: false,
+        // Specific offer
+        appliedCompany: "",
+        appliedJob: "",
+        appliedSkillPoints: 0,
+        jobOffers: [ ],
+        successfulApplication: ""
     };
 
     handleDateRangeChange = (event, { name, value }) => {
@@ -67,6 +76,17 @@ class Offerings extends Component {
         }
     };
 
+    openModal = (name) => {
+        this.setState({
+            [`${name}IsOpen`]: true
+        });
+    }
+
+    closeModal = (name) => {
+        this.setState({
+            [`${name}IsOpen`]: false,
+        });
+    }
 
     produceJobOffers = () => {
         let offers = [];
@@ -80,14 +100,23 @@ class Offerings extends Component {
                 skillPoints: faker.random.number({
                     min: this.state.skillPoints[0] === 0 && this.state.skillPoints[1] === 0 ? 0 : this.state.skillPoints[0],
                     max: this.state.skillPoints[0] === 0 && this.state.skillPoints[1] === 0 ? 500 : this.state.skillPoints[1]
-                 })
+                })
             }
         }
         return offers;
     }
 
     handleProfessionChange = (e, { value }) => {
-        this.setState({ profession: value, loadingSegment: true });
+        this.setState({ profession: value, loadingSegment: true, jobOffers: this.produceJobOffers() });
+        setTimeout(() => {
+            this.setState({
+                loadingSegment: false
+            });
+        }, 500);
+    }
+
+    handlePageChange = () => {
+        this.setState({ loadingSegment: true, jobOffers: this.produceJobOffers() });
         setTimeout(() => {
             this.setState({
                 loadingSegment: false
@@ -96,7 +125,7 @@ class Offerings extends Component {
     }
 
     handlePositionChange = (e, { value }) => {
-        this.setState({ position: value, loadingSegment: true });
+        this.setState({ position: value, loadingSegment: true, jobOffers: this.produceJobOffers() });
         setTimeout(() => {
             this.setState({
                 loadingSegment: false
@@ -104,10 +133,11 @@ class Offerings extends Component {
         }, 500);
     }
 
-    handlePageSizeChange = (e, { value }) => { 
+    handlePageSizeChange = (e, { value }) => {
         this.setState({ pageSize: value, loadingSegment: true });
         setTimeout(() => {
             this.setState({
+                jobOffers: this.produceJobOffers(),
                 loadingSegment: false
             });
         }, 500);
@@ -131,13 +161,43 @@ class Offerings extends Component {
 
     componentDidMount = () => {
         window.addEventListener("resize", this.updateDimensions);
-        this.setState({ loadingSegment: true });
+        this.setState({ jobOffers: this.produceJobOffers(), loadingSegment: true });
         setTimeout(() => {
             this.setState({
                 loadingSegment: false
             });
         }, 500);
     };
+
+    applyForOfferModal = (company, job, skillPoints) => {
+        this.openModal("applyForOffer");
+        this.setState({
+            appliedCompany: company,
+            appliedJob: job,
+            appliedSkillPoints: skillPoints
+        });
+    }
+
+    applyForOffer = () => {
+        /* Check for skill points */
+        if (this.state.appliedSkillPoints > 350) {
+            Toast.make("error", "Insufficient skill points", "You do not have enough skill points to apply for this position.")
+            return;
+        }
+
+        this.setState({
+            formLoading: true
+        });
+
+        setTimeout(() => {
+            this.setState({
+                formLoading: false,
+                applyForOfferIsOpen: false,
+                successfulApplication: this.state.appliedJob
+            });
+            Toast.make("success", "Successful application", "You have successfully applied for a job position.")
+        }, 1000);
+    }
 
     render() {
         return (
@@ -168,13 +228,7 @@ class Offerings extends Component {
                                         selection
                                         value={this.state.profession}
                                         options={this.state.professionOptions}
-                                        onChange={
-                                            _.debounce(
-                                                this.handleProfessionChange,
-                                                500,
-                                                { leading: true }
-                                            )
-                                        }
+                                        onChange={this.handleProfessionChange}
                                     />
                                 </Form.Field>
                             </Form>
@@ -191,12 +245,7 @@ class Offerings extends Component {
                                         selection
                                         value={this.state.position}
                                         options={this.state.positionOptions}
-                                        onChange={
-                                            _.debounce(
-                                                this.handlePositionChange, 500,
-                                                { leading: true }
-                                            )
-                                        }
+                                        onChange={this.handlePositionChange}
                                     />
                                     {/* <DatesRangeInput
                                         name="datesRange"
@@ -230,17 +279,18 @@ class Offerings extends Component {
                         </Grid.Column>
                         <Grid.Column floated="right">
                             <Form>
-                                <Form.Field>
+                                <Form.Field                                         
+                                    style={{
+                                            width: !this.state.mobile
+                                                ? "40%"
+                                                : "100%"
+                                        }}>
                                     <label>Page size:</label>
                                     <Dropdown
-                                        style={{
-                                            width: !this.state.mobile
-                                                ? "45%"
-                                                : "100%"
-                                        }}
                                         placeholder="Show..."
                                         selection
                                         compact
+                                        fluid
                                         value={this.state.pageSize}
                                         onChange={this.handlePageSizeChange}
                                         options={[
@@ -272,8 +322,8 @@ class Offerings extends Component {
                             <Segment loading={this.state.loadingSegment}>
                                 <Card.Group stackable centered>
                                     {
-                                        this.produceJobOffers().map(offer => (
-                                            <Card>
+                                        this.state.jobOffers.map((offer, i) => (
+                                            <Card key={i}>
                                                 <Image src={offer.image} wrapped ui={false} />
                                                 <Card.Content>
                                                     <Card.Header>{offer.job}</Card.Header>
@@ -284,10 +334,10 @@ class Offerings extends Component {
                                                 <Card.Content>
                                                     <Grid columns="2" stackable>
                                                         <Grid.Row>
-                                                            <Grid.Column floated="left">
+                                                            <Grid.Column floated="left" textAlign={this.state.mobile ? "center" : "left"}>
                                                                 <Label as="a" title="Salary" basic color="green" size="big">${offer.salary}</Label>
                                                             </Grid.Column>
-                                                            <Grid.Column floated="right" textAlign="right">
+                                                            <Grid.Column floated="right" textAlign={this.state.mobile ? "center" : "right"}>
                                                                 <Label as="a" title="Skill Points" basic color="red" size="big">{offer.skillPoints} SP</Label>
                                                             </Grid.Column>
                                                         </Grid.Row>
@@ -300,8 +350,11 @@ class Offerings extends Component {
                                                             More info
                                                         </Button>
                                                         <Button.Or />
-                                                        <Button color="blue">
-                                                            Apply
+                                                        <Button color="blue" 
+                                                            onClick={() => this.applyForOfferModal(offer.company, offer.job, offer.skillPoints)}
+                                                            disabled={this.state.successfulApplication === offer.job}
+                                                        >
+                                                            { this.state.successfulApplication ? "Applied" : "Apply" }
                                                         </Button>
                                                     </Button.Group>
                                                 </Card.Content>
@@ -312,7 +365,47 @@ class Offerings extends Component {
                             </Segment>
                         </Grid.Column>
                     </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column computer="14" tablet="14">
+                            <Pagination
+                                style={{ float: "right" }}
+                                boundaryRange={1}
+                                defaultActivePage={1}
+                                ellipsisItem={'...'}
+                                firstItem={null}
+                                onPageChange={this.handlePageChange}
+                                lastItem={null}
+                                siblingRange={1}
+                                totalPages={10}
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
                 </Grid>
+                {/* Modals */}
+                {/* Delete skill */}
+                <TransitionablePortal
+                    open={this.state.applyForOfferIsOpen}
+                    transition={{ animation: "scale", duration: 300 }}
+                >
+                    <Modal
+                        closeIcon
+                        size="small"
+                        onClose={() => this.closeModal("applyForOffer")}
+                        open={this.state.applyForOfferIsOpen}
+                    >
+                        <Header icon="check square outline" content="Apply for job offer" />
+                        <Modal.Content>
+                            Are you sure you want to apply for the position of {this.state.appliedJob} at {this.state.appliedCompany}?
+                        </Modal.Content>
+                        <Modal.Actions>
+                            <Button.Group>
+                                <Button onClick={() => this.closeModal("applyForOffer")}>Cancel</Button>
+                                <Button.Or />
+                                <Button positive loading={this.state.formLoading} onClick={this.applyForOffer}>Apply</Button>
+                            </Button.Group>
+                        </Modal.Actions>
+                    </Modal>
+                </TransitionablePortal>
             </div>
         )
     }
