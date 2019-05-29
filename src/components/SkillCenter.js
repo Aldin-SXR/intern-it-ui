@@ -6,7 +6,8 @@ import {
     Form,
     Dropdown,
     Card,
-    Button
+    Button,
+    Divider
 } from "semantic-ui-react";
 import SkillDialog from "./SkillDialog";
 
@@ -133,6 +134,7 @@ class SkillCenter extends Component {
                             </Header>
                         </Grid.Column>
                     </Grid.Row>
+                    <Divider section />
                     <Grid.Row columns="3" style={{ height: "20em" }}>
                         <Grid.Column>
                             <Form>
