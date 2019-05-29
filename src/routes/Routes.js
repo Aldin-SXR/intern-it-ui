@@ -14,6 +14,7 @@ import { createHashHistory } from "history";
 import { SemanticToastContainer } from "react-semantic-toasts";
 import LandingPage from "../components/LandingPage";
 import Login from "../components/Login";
+import Register from "../components/Register";
 const history = createHashHistory();
 
 /** Scroll to top on route change  */
@@ -71,6 +72,7 @@ export default () => {
                 <PrivateRoute exact path="/home" components={[Home, null]} />
                 <Route exact path="/" component={LandingPage} />
                 <Route exact path="/login" component={Login} />
+                <Route exact path="/register" component={Register} />
                 <PrivateRoute
                     exact
                     path="/rankings"

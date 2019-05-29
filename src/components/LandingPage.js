@@ -34,7 +34,7 @@ const getWidth = () => {
 /* Heads up! HomepageHeading uses inline styling, however it's not the best practice. Use CSS or styled components for
  * such things.
  */
-const HomepageHeading = ({ mobile }) => (
+const HomepageHeading = ({ mobile, setActive }) => (
     <Container text>
         <Header
             as="h1"
@@ -57,7 +57,13 @@ const HomepageHeading = ({ mobile }) => (
                 marginTop: mobile ? "0.5em" : "1.5em"
             }}
         />
-        <Button primary size="huge">
+        <Button
+            primary
+            size="huge"
+            onClick={() => {
+                setActive("about");
+            }}
+        >
             <Icon name="graduation cap" />
             Learn More
         </Button>
@@ -88,12 +94,27 @@ const HomepageFooting = ({ mobile }) => (
             inverted
         />
         <Button.Group size="huge">
-            <Button color="teal">
+            <Button
+                color="teal"
+                onClick={() => {
+                    window.location.replace(
+                        window.location.origin + "/#/register?=intern"
+                    );
+                }}
+            >
                 <Icon name="briefcase" />
                 Intern
             </Button>
             <Button.Or />
-            <Button color="blue" primary>
+            <Button
+                color="blue"
+                primary
+                onClick={() => {
+                    window.location.replace(
+                        window.location.origin + "/#/register?=company"
+                    );
+                }}
+            >
                 <Icon name="building" />
                 Company
             </Button>
@@ -203,6 +224,9 @@ class DesktopContainer extends Component {
                                             inverted={!fixed}
                                             primary={fixed}
                                             style={{ marginLeft: "0.5em" }}
+                                            onClick={() => {
+                                                this.redirectTo("/register");
+                                            }}
                                         >
                                             Sign Up
                                         </Button>
@@ -210,7 +234,7 @@ class DesktopContainer extends Component {
                                 </Container>
                             </Menu>
                             {this.state.active === "home" && (
-                                <HomepageHeading />
+                                <HomepageHeading setActive={this.setActive} />
                             )}
                         </div>
                     </Segment>
@@ -310,7 +334,14 @@ class MobileContainer extends Component {
                     >
                         Log in
                     </Menu.Item>
-                    <Menu.Item as="a">Sign Up</Menu.Item>
+                    <Menu.Item
+                        as="a"
+                        onClick={() => {
+                            this.redirectTo("/register");
+                        }}
+                    >
+                        Sign Up
+                    </Menu.Item>
                 </Sidebar>
 
                 <Sidebar.Pusher dimmed={sidebarOpened}>
@@ -342,6 +373,9 @@ class MobileContainer extends Component {
                                         as="a"
                                         inverted
                                         style={{ marginLeft: "0.5em" }}
+                                        onClick={() => {
+                                            this.redirectTo("/register");
+                                        }}
                                     >
                                         Sign Up
                                     </Button>
