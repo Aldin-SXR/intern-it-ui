@@ -7,8 +7,12 @@ import {
     Dropdown,
     Card,
     Button,
-    Divider
+    Divider,
+    Modal
 } from "semantic-ui-react";
+import SkillDialog from "./SkillDialog";
+
+import * as Toast from "../utils/toaster";
 
 class SkillCenter extends Component {
     state = {
@@ -48,9 +52,15 @@ class SkillCenter extends Component {
                     "This article is aimed at junior developers, but may interest anyone as a bank of useful tips on how to grow some good habits."
             }
         ],
+        selectedItem: {
+            name: "",
+            image: "",
+            description: ""
+        },
         profession: "it",
         proficiency: "all",
-        mobile: false
+        mobile: false,
+        open: false
     };
 
     handleDateRangeChange = (event, { name, value }) => {
@@ -78,6 +88,25 @@ class SkillCenter extends Component {
                 mobile: false
             });
         }
+    };
+
+    saveState = (name, state) => {
+        this.setState({
+            [name]: state
+        });
+    };
+
+    setSelectedItem = item => {
+        this.setState(
+            {
+                selectedItem: { ...item }
+            },
+            () => {
+                this.setState({
+                    open: true
+                });
+            }
+        );
     };
 
     componentWillMount = () => {
@@ -155,11 +184,29 @@ class SkillCenter extends Component {
                                         }}
                                         extra={
                                             <div>
-                                                <Button color="blue">
-                                                    View
-                                                </Button>
-                                                <Button color="green">
+                                                <Button
+                                                    color="green"
+                                                    onClick={() => {
+                                                        Toast.make(
+                                                            "success",
+                                                            "Enrollment successful!",
+                                                            "Enrolled into ".concat(
+                                                                item.name
+                                                            )
+                                                        );
+                                                    }}
+                                                >
                                                     Enroll
+                                                </Button>
+                                                <Button
+                                                    color="blue"
+                                                    onClick={() => {
+                                                        this.setSelectedItem(
+                                                            item
+                                                        );
+                                                    }}
+                                                >
+                                                    View
                                                 </Button>
                                             </div>
                                         }
@@ -168,6 +215,11 @@ class SkillCenter extends Component {
                             );
                         })}
                     </Grid.Row>
+                    <SkillDialog
+                        saveState={this.saveState}
+                        {...this.state.selectedItem}
+                        open={this.state.open}
+                    />
                 </Grid>
             </div>
         );
