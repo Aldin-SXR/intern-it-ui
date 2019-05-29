@@ -111,8 +111,10 @@ class AdminApp extends Component {
         });
     };
 
-    handleResultSelect = (e, { result }) =>
+    handleResultSelect = (e, { result }) => {
         this.setState({ value: result.title });
+        this.props.history.push("/offerings");
+    }
 
     handleSearchChange = (e, { value }) => {
         this.setState({ isLoading: true, value });
@@ -141,13 +143,13 @@ class AdminApp extends Component {
         }, 300);
     };
 
-    componentDidUpdate = prevProps => {};
+    componentDidUpdate = prevProps => { };
 
-    logOutIfInvalid = () => {};
+    logOutIfInvalid = () => { };
 
     /* Log out */
     logOut = () => {
-        this.props.history.push("/login");
+        this.props.history.push("/");
     };
 
     /* Menu route changes */
@@ -182,9 +184,8 @@ class AdminApp extends Component {
                             </Menu.Item>
                             <Menu.Menu position="right">
                                 <Menu.Item
-                                    active={activeItem === "profile"}
                                     name="profile"
-                                    onClick={this.handleRouteChange}
+                                    onClick={() => this.handleRouteChange("home")}
                                 >
                                     <Icon name="user" />
                                     &nbsp; {this.state.name}
@@ -219,8 +220,12 @@ class AdminApp extends Component {
                             <Menu.Item>
                                 <Search
                                     category
+                                    input={{
+                                        style: {
+                                            width: '30em'
+                                        }
+                                    }}
                                     loading={isLoading}
-                                    fluid
                                     placeholder="Search for job offers..."
                                     onResultSelect={this.handleResultSelect}
                                     onSearchChange={_.debounce(
@@ -236,9 +241,12 @@ class AdminApp extends Component {
                                 />
                             </Menu.Item>
                             <Menu.Menu position="right">
-                                <Menu.Item name="profile" onClick={this.handleRouteChange}>
+                                <Menu.Item name="profile" onClick={() => this.handleRouteChange("profile")}>
                                     <Icon name="user" />
                                     &nbsp; {this.state.name}
+                                </Menu.Item>
+                                <Menu.Item as="a" title="Log out" onClick={this.logOut}>
+                                    <Icon name="power off" />
                                 </Menu.Item>
                             </Menu.Menu>
                         </Menu>

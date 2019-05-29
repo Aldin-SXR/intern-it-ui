@@ -5,7 +5,8 @@ export const make = (type, title, description) => {
         toast({
             type: type,
             title: title,
-            description: description
+            description: description,
+            time: 3000
         });
     }, 100);
 }
