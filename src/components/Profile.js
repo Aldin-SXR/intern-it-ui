@@ -1,17 +1,32 @@
-import React, { Component } from 'react'
-import { Grid, Header, Icon, Divider, Segment, Card, Image, Statistic, Item, Input, List, Button, Label, TransitionablePortal, Modal, Form, Dropdown, TextArea } from 'semantic-ui-react';
+import React, { Component } from "react";
+import {
+    Grid,
+    Header,
+    Icon,
+    Divider,
+    Segment,
+    Card,
+    Image,
+    Input,
+    Button,
+    Label,
+    TransitionablePortal,
+    Modal,
+    Form,
+    Dropdown,
+    TextArea
+} from "semantic-ui-react";
 
-import faker from "faker";
 import * as Toast from "../utils/toaster";
-import { toast } from 'react-semantic-toasts/build/toast';
 import Validator from "../utils/validationUtils";
 
 class Profile extends Component {
     state = {
         name: "Aldin Kovačević",
         occupation: "Undergraduate Student",
-        bio: "A student at International Burch University, Department of Information Technologies, hard-working, meticulous, highly motivated and willing to learn and adapt to new technologies. Primary areas of interest include embedded systems, machine learning and data science, PHP and Python programming. I am proficient in C and C++ programming and have experience with graphic design software (Adobe Photoshop and InDesign) - all self-taught.",
-        image: 'https://react.semantic-ui.com/images/avatar/large/matthew.png',
+        bio:
+            "A student at International Burch University, Department of Information Technologies, hard-working, meticulous, highly motivated and willing to learn and adapt to new technologies. Primary areas of interest include embedded systems, machine learning and data science, PHP and Python programming. I am proficient in C and C++ programming and have experience with graphic design software (Adobe Photoshop and InDesign) - all self-taught.",
+        image: "https://react.semantic-ui.com/images/avatar/large/matthew.png",
         joined: new Date().toDateString(),
         address: "Safvet-bega Bašagića br. 1, 76101 Brčko",
         phone: "+387603383856",
@@ -31,10 +46,14 @@ class Profile extends Component {
             { key: "c++", value: "C++", text: "C++" },
             { key: "c#", value: "C#", text: "C#" },
             { key: "linux", value: "Linux", text: "Linux" },
-            { key: "net", value: "Network Management", text: "Network Management" },
+            {
+                key: "net",
+                value: "Network Management",
+                text: "Network Management"
+            },
             { key: "java", value: "Java", text: "Java" }
         ],
-        skillOption: '',
+        skillOption: "",
         skillError: false,
         // proficiencies
         proficencyOptions: [
@@ -42,16 +61,18 @@ class Profile extends Component {
             { key: "i", value: "Intermediate", text: "Intermediate" },
             { key: "a", value: "Advanced", text: "Advanced" }
         ],
-        proficencyOption: '',
+        proficencyOption: "",
         proficencyError: false,
         initialUser: {
             name: "Aldin Kovačević",
             occupation: "Undergraduate Student",
-            bio: "A student at International Burch University, Department of Information Technologies, hard-working, meticulous, highly motivated and willing to learn and adapt to new technologies. Primary areas of interest include embedded systems, machine learning and data science, PHP and Python programming. I am proficient in C and C++ programming and have experience with graphic design software (Adobe Photoshop and InDesign) - all self-taught.",
-            image: 'https://react.semantic-ui.com/images/avatar/large/matthew.png',
+            bio:
+                "A student at International Burch University, Department of Information Technologies, hard-working, meticulous, highly motivated and willing to learn and adapt to new technologies. Primary areas of interest include embedded systems, machine learning and data science, PHP and Python programming. I am proficient in C and C++ programming and have experience with graphic design software (Adobe Photoshop and InDesign) - all self-taught.",
+            image:
+                "https://react.semantic-ui.com/images/avatar/large/matthew.png",
             joined: new Date().toDateString(),
             address: "Safvet-bega Bašagića br. 1, 76101 Brčko",
-            phone: "+387603383856",
+            phone: "+387603383856"
         },
         nameError: false,
         occupationError: false,
@@ -60,7 +81,7 @@ class Profile extends Component {
         bioError: false,
         successfulUpdate: false,
         mobile: false
-    }
+    };
 
     updateDimensions = () => {
         if (window.innerWidth <= 768) {
@@ -82,19 +103,18 @@ class Profile extends Component {
         window.addEventListener("resize", this.updateDimensions);
     };
 
-    closeModal = (name) => {
+    closeModal = name => {
         this.setState({
-            [`${name}IsOpen`]: false,
+            [`${name}IsOpen`]: false
         });
 
         /* Handle Profile modal */
         if (name === "updateProfile" && !this.state.successfulUpdate) {
             this.setState(this.state.initialUser);
         }
-    }
+    };
 
-    handleSkillChange = (e, { value }) =>
-        this.setState({ skillOption: value });
+    handleSkillChange = (e, { value }) => this.setState({ skillOption: value });
 
     handleproficencyChange = (e, { value }) =>
         this.setState({ proficencyOption: value });
@@ -102,7 +122,11 @@ class Profile extends Component {
     addSkill = () => {
         /** Validations */
         if (!Validator.validateField(this.state.skillOption)) {
-            Toast.make("error", "Empty field", "Please select a skill from the dropdown.");
+            Toast.make(
+                "error",
+                "Empty field",
+                "Please select a skill from the dropdown."
+            );
             this.setState({
                 skillError: true
             });
@@ -113,17 +137,24 @@ class Profile extends Component {
         }
 
         if (!Validator.validateField(this.state.proficencyOption)) {
-            Toast.make("error", "Empty field", "Please select a proficiency level.");
+            Toast.make(
+                "error",
+                "Empty field",
+                "Please select a proficiency level."
+            );
             this.setState({
                 proficencyError: true
             });
         } else {
             this.setState({
                 skillError: false
-            })
+            });
         }
 
-        if (!Validator.validateField(this.state.skillOption) || !Validator.validateField(this.state.proficencyOption)) {
+        if (
+            !Validator.validateField(this.state.skillOption) ||
+            !Validator.validateField(this.state.proficencyOption)
+        ) {
             return;
         }
 
@@ -133,13 +164,23 @@ class Profile extends Component {
 
         setTimeout(() => {
             this.setState({
-                skills: [...this.state.skills, { name: this.state.skillOption, level: this.state.proficencyOption }],
+                skills: [
+                    ...this.state.skills,
+                    {
+                        name: this.state.skillOption,
+                        level: this.state.proficencyOption
+                    }
+                ],
                 formLoading: false,
                 addSkillIsOpen: false
             });
-            Toast.make("success", "Successful insertion", "A skill was successfully added.")
+            Toast.make(
+                "success",
+                "Successful insertion",
+                "A skill was successfully added."
+            );
         }, 1000);
-    }
+    };
 
     removeSkill = () => {
         let n = JSON.parse(JSON.stringify(this.state.skills));
@@ -155,15 +196,19 @@ class Profile extends Component {
                 formLoading: false,
                 removeSkillIsOpen: false
             });
-            Toast.make("success", "Successful removal", "Skill was successfully removed.")
+            Toast.make(
+                "success",
+                "Successful removal",
+                "Skill was successfully removed."
+            );
         }, 1000);
-    }
+    };
 
     handleAddition = (e, { value }) => {
         this.setState({
-            skillOptions: [{ text: value, value }, ...this.state.skillOptions],
-        })
-    }
+            skillOptions: [{ text: value, value }, ...this.state.skillOptions]
+        });
+    };
 
     updateProfile = () => {
         /** Validate */
@@ -175,7 +220,7 @@ class Profile extends Component {
         } else {
             this.setState({
                 nameError: false
-            })
+            });
         }
 
         if (!Validator.validateField(this.state.occupation)) {
@@ -186,7 +231,7 @@ class Profile extends Component {
         } else {
             this.setState({
                 occupationError: false
-            })
+            });
         }
 
         if (!Validator.validateField(this.state.address)) {
@@ -197,38 +242,49 @@ class Profile extends Component {
         } else {
             this.setState({
                 addressError: false
-            })
+            });
         }
 
         if (!Validator.validateField(this.state.phone)) {
-            Toast.make("error", "Empty field", "Please enter your phone number.");
+            Toast.make(
+                "error",
+                "Empty field",
+                "Please enter your phone number."
+            );
             this.setState({
                 phoneError: true
             });
         } else {
             this.setState({
                 phoneError: false
-            })
+            });
         }
 
         if (!Validator.validateField(this.state.bio)) {
-            Toast.make("error", "Empty field", "Please fill in a short biography.");
+            Toast.make(
+                "error",
+                "Empty field",
+                "Please fill in a short biography."
+            );
             this.setState({
                 bioError: true
             });
         } else {
             this.setState({
                 bioError: false
-            })
+            });
         }
 
-        if (!Validator.validateField(this.state.name) || !Validator.validateField(this.state.occupation) ||
-            !Validator.validateField(this.state.address) || !Validator.validateField(this.state.phone) ||
+        if (
+            !Validator.validateField(this.state.name) ||
+            !Validator.validateField(this.state.occupation) ||
+            !Validator.validateField(this.state.address) ||
+            !Validator.validateField(this.state.phone) ||
             !Validator.validateField(this.state.bio)
-            ) {
+        ) {
             return;
         }
-        
+
         this.setState({
             successfulUpdate: false,
             formLoading: true
@@ -240,21 +296,25 @@ class Profile extends Component {
                 updateProfileIsOpen: false,
                 successfulUpdate: true
             });
-            Toast.make("success", "Successful update", "Your profile was successfully updated.")
+            Toast.make(
+                "success",
+                "Successful update",
+                "Your profile was successfully updated."
+            );
         }, 1000);
-    }
+    };
 
     handleChange = (e, { name, value }) => {
         this.setState({
             [name]: value
         });
-    }
+    };
 
-    openModal = (name) => {
+    openModal = name => {
         this.setState({
             [`${name}IsOpen`]: true
         });
-    }
+    };
 
     render() {
         return (
@@ -262,11 +322,13 @@ class Profile extends Component {
                 <Grid stackable padded>
                     <Grid.Row>
                         <Grid.Column>
-                            <Header as='h1'>
-                                <Icon name='user' />
+                            <Header as="h1">
+                                <Icon name="user" />
                                 <Header.Content>
                                     Profile
-                                    <Header.Subheader>View and edit your personal information.</Header.Subheader>
+                                    <Header.Subheader>
+                                        View and edit your personal information.
+                                    </Header.Subheader>
                                 </Header.Content>
                             </Header>
                         </Grid.Column>
@@ -276,15 +338,32 @@ class Profile extends Component {
                         <Grid columns={3} divided stackable>
                             <Grid.Row stretched>
                                 <Grid.Column>
-                                    <Segment style={ this.state.mobile ? { marginLeft: '2em' } : null}>
+                                    <Segment
+                                        style={
+                                            this.state.mobile
+                                                ? { marginLeft: "2em" }
+                                                : null
+                                        }
+                                    >
                                         <Grid stackable columns={2}>
                                             <Grid.Column>
                                                 <Card fluid>
-                                                    <Image src={this.state.image} wrapped ui={false} />
+                                                    <Image
+                                                        src={this.state.image}
+                                                        wrapped
+                                                        ui={false}
+                                                    />
                                                     <Card.Content>
-                                                        <Card.Header>{this.state.name}</Card.Header>
+                                                        <Card.Header>
+                                                            {this.state.name}
+                                                        </Card.Header>
                                                         <Card.Meta>
-                                                            <span className='date'>{this.state.occupation}</span>
+                                                            <span className="date">
+                                                                {
+                                                                    this.state
+                                                                        .occupation
+                                                                }
+                                                            </span>
                                                         </Card.Meta>
                                                         {/* style={{ textAlign: "justify" }} */}
                                                         <Card.Description>
@@ -292,60 +371,107 @@ class Profile extends Component {
                                                         </Card.Description>
                                                     </Card.Content>
                                                     <Card.Content extra>
-                                                        <a>
-                                                            <Icon name='user' />
-                                                            Joined: {this.state.joined}
+                                                        {/* eslint-disable-next-line*/}
+                                                        <a href="#">
+                                                            <Icon name="user" />
+                                                            Joined:{" "}
+                                                            {this.state.joined}
                                                         </a>
                                                     </Card.Content>
                                                 </Card>
                                             </Grid.Column>
-                                            <Grid.Column >
-                                                <Header as='h2'>
-                                                    <Icon name='trophy' />
+                                            <Grid.Column>
+                                                <Header as="h2">
+                                                    <Icon name="trophy" />
                                                     <Header.Content>
                                                         SKILL POINTS
-                                                        <Header.Subheader>350 skill points</Header.Subheader>
+                                                        <Header.Subheader>
+                                                            350 skill points
+                                                        </Header.Subheader>
                                                     </Header.Content>
                                                 </Header>
                                                 <Grid.Row>
                                                     <Grid.Column>
-                                                        <Button as='div' labelPosition='right' onClick={() => { this.openModal("addSkill") }}>
-                                                            <Button color='blue'>
-                                                                <Icon name='plus' />
+                                                        <Button
+                                                            as="div"
+                                                            labelPosition="right"
+                                                            onClick={() => {
+                                                                this.openModal(
+                                                                    "addSkill"
+                                                                );
+                                                            }}
+                                                        >
+                                                            <Button color="blue">
+                                                                <Icon name="plus" />
                                                                 Add a new skill
                                                             </Button>
-                                                            <Label as='a' basic color='blue' pointing='left' title="Current skills">
-                                                                {this.state.skills.length}
+                                                            <Label
+                                                                as="a"
+                                                                basic
+                                                                color="blue"
+                                                                pointing="left"
+                                                                title="Current skills"
+                                                            >
+                                                                {
+                                                                    this.state
+                                                                        .skills
+                                                                        .length
+                                                                }
                                                             </Label>
                                                         </Button>
                                                     </Grid.Column>
                                                 </Grid.Row>
-                                                <Divider></Divider>
-                                                <Header as="h4" style={{ marginBottom: '2em' }}>
+                                                <Divider />
+                                                <Header
+                                                    as="h4"
+                                                    style={{
+                                                        marginBottom: "2em"
+                                                    }}
+                                                >
                                                     <Icon name="info" />
                                                     <Header.Content>
                                                         Additional information
                                                         {/* <Header.Subheader>350 skill points</Header.Subheader> */}
                                                     </Header.Content>
                                                 </Header>
-                                                <Grid.Row style={{ marginBottom: '1em' }}>
+                                                <Grid.Row
+                                                    style={{
+                                                        marginBottom: "1em"
+                                                    }}
+                                                >
                                                     <Grid.Column>
                                                         <Header as="h5">
                                                             <Icon name="address book" />
                                                             <Header.Content>
                                                                 Address:
-                                                            <Header.Subheader>{this.state.address}</Header.Subheader>
+                                                                <Header.Subheader>
+                                                                    {
+                                                                        this
+                                                                            .state
+                                                                            .address
+                                                                    }
+                                                                </Header.Subheader>
                                                             </Header.Content>
                                                         </Header>
                                                     </Grid.Column>
                                                 </Grid.Row>
-                                                <Grid.Row style={{ marginBottom: '1em' }}>
+                                                <Grid.Row
+                                                    style={{
+                                                        marginBottom: "1em"
+                                                    }}
+                                                >
                                                     <Grid.Column>
                                                         <Header as="h5">
                                                             <Icon name="phone" />
                                                             <Header.Content>
                                                                 Phone number:
-                                                            <Header.Subheader>{this.state.phone}</Header.Subheader>
+                                                                <Header.Subheader>
+                                                                    {
+                                                                        this
+                                                                            .state
+                                                                            .phone
+                                                                    }
+                                                                </Header.Subheader>
                                                             </Header.Content>
                                                         </Header>
                                                     </Grid.Column>
@@ -355,10 +481,17 @@ class Profile extends Component {
                                                     <Grid.Column>
                                                         <Button
                                                             icon
-                                                            onClick={() => { this.openModal("updateProfile") }}
+                                                            onClick={() => {
+                                                                this.openModal(
+                                                                    "updateProfile"
+                                                                );
+                                                            }}
                                                             color="teal"
-                                                            labelPosition="left">
-                                                            <Icon name="edit" />Update profile</Button>
+                                                            labelPosition="left"
+                                                        >
+                                                            <Icon name="edit" />
+                                                            Update profile
+                                                        </Button>
                                                     </Grid.Column>
                                                 </Grid.Row>
                                             </Grid.Column>
@@ -366,44 +499,79 @@ class Profile extends Component {
                                     </Segment>
                                 </Grid.Column>
                                 <Grid.Column computer="9" tablet="9">
-                                    <Segment style={ this.state.mobile ? { marginLeft: '2em' } : null}>
+                                    <Segment
+                                        style={
+                                            this.state.mobile
+                                                ? { marginLeft: "2em" }
+                                                : null
+                                        }
+                                    >
                                         <Grid>
                                             <Grid.Row columns="1">
                                                 <Grid.Column>
-                                                    <Header as='h2'>
-                                                        <Icon name='lab' />
+                                                    <Header as="h2">
+                                                        <Icon name="lab" />
                                                         <Header.Content>
                                                             NOTABLE SKILLS
-                                                        <Header.Subheader>Your most prominent skills.</Header.Subheader>
+                                                            <Header.Subheader>
+                                                                Your most
+                                                                prominent
+                                                                skills.
+                                                            </Header.Subheader>
                                                         </Header.Content>
                                                     </Header>
                                                 </Grid.Column>
                                             </Grid.Row>
                                         </Grid>
                                         <Divider />
-                                        <Card.Group stackable style={ this.state.mobile ? { marginTop: '2em' } : null}>
-                                            {
-                                                this.state.skills.map((skill, i) => (
+                                        <Card.Group
+                                            stackable
+                                            style={
+                                                this.state.mobile
+                                                    ? { marginTop: "2em" }
+                                                    : null
+                                            }
+                                        >
+                                            {this.state.skills.map(
+                                                (skill, i) => (
                                                     <Card key={i}>
                                                         <Card.Content>
-                                                            <Image as={Icon} floated='right' size='mini' name="star" />
-                                                            <Card.Header>{skill.name}</Card.Header>
-                                                            <Card.Meta>Proficiency level: {skill.level}</Card.Meta>
+                                                            <Image
+                                                                as={Icon}
+                                                                floated="right"
+                                                                size="mini"
+                                                                name="star"
+                                                            />
+                                                            <Card.Header>
+                                                                {skill.name}
+                                                            </Card.Header>
+                                                            <Card.Meta>
+                                                                Proficiency
+                                                                level:{" "}
+                                                                {skill.level}
+                                                            </Card.Meta>
                                                         </Card.Content>
                                                         <Card.Content extra>
                                                             <Button.Group fluid>
                                                                 <Button color="teal">
                                                                     Edit
-                                                            </Button>
+                                                                </Button>
                                                                 <Button.Or />
-                                                                <Button color='red' onClick={() => { this.openModal("removeSkill") }}>
+                                                                <Button
+                                                                    color="red"
+                                                                    onClick={() => {
+                                                                        this.openModal(
+                                                                            "removeSkill"
+                                                                        );
+                                                                    }}
+                                                                >
                                                                     Delete
-                                                            </Button>
+                                                                </Button>
                                                             </Button.Group>
                                                         </Card.Content>
                                                     </Card>
-                                                ))
-                                            }
+                                                )
+                                            )}
                                         </Card.Group>
                                     </Segment>
                                     {/* <Segment>2</Segment> */}
@@ -413,23 +581,46 @@ class Profile extends Component {
                             {/* Delete skill */}
                             <TransitionablePortal
                                 open={this.state.removeSkillIsOpen}
-                                transition={{ animation: "scale", duration: 300 }}
+                                transition={{
+                                    animation: "scale",
+                                    duration: 300
+                                }}
                             >
                                 <Modal
                                     closeIcon
                                     size="small"
-                                    onClose={() => this.closeModal("removeSkill")}
+                                    onClose={() =>
+                                        this.closeModal("removeSkill")
+                                    }
                                     open={this.state.removeSkillIsOpen}
                                 >
-                                    <Header icon="trash" content="Remove skill" />
+                                    <Header
+                                        icon="trash"
+                                        content="Remove skill"
+                                    />
                                     <Modal.Content>
-                                        Are you sure you want to remove this skill?
-                                                    </Modal.Content>
+                                        Are you sure you want to remove this
+                                        skill?
+                                    </Modal.Content>
                                     <Modal.Actions>
                                         <Button.Group>
-                                            <Button onClick={() => this.closeModal("removeSkill")}>Cancel</Button>
+                                            <Button
+                                                onClick={() =>
+                                                    this.closeModal(
+                                                        "removeSkill"
+                                                    )
+                                                }
+                                            >
+                                                Cancel
+                                            </Button>
                                             <Button.Or />
-                                            <Button negative loading={this.state.formLoading} onClick={this.removeSkill}>Remove</Button>
+                                            <Button
+                                                negative
+                                                loading={this.state.formLoading}
+                                                onClick={this.removeSkill}
+                                            >
+                                                Remove
+                                            </Button>
                                         </Button.Group>
                                     </Modal.Actions>
                                 </Modal>
@@ -437,7 +628,10 @@ class Profile extends Component {
                             {/* Add skill */}
                             <TransitionablePortal
                                 open={this.state.addSkillIsOpen}
-                                transition={{ animation: "scale", duration: 300 }}
+                                transition={{
+                                    animation: "scale",
+                                    duration: 300
+                                }}
                             >
                                 <Modal
                                     closeIcon
@@ -456,12 +650,22 @@ class Profile extends Component {
                                                     search
                                                     clearable
                                                     selection
-                                                    error={this.state.skillError}
+                                                    error={
+                                                        this.state.skillError
+                                                    }
                                                     allowAdditions
-                                                    onAddItem={this.handleAddition}
-                                                    value={this.state.skillOption}
-                                                    options={this.state.skillOptions}
-                                                    onChange={this.handleSkillChange}
+                                                    onAddItem={
+                                                        this.handleAddition
+                                                    }
+                                                    value={
+                                                        this.state.skillOption
+                                                    }
+                                                    options={
+                                                        this.state.skillOptions
+                                                    }
+                                                    onChange={
+                                                        this.handleSkillChange
+                                                    }
                                                 />
                                             </Form.Field>
                                             <Form.Field>
@@ -470,19 +674,43 @@ class Profile extends Component {
                                                     placeholder="Select a proficiency level"
                                                     fluid
                                                     selection
-                                                    error={this.state.proficencyError}
-                                                    value={this.state.proficencyOption}
-                                                    options={this.state.proficencyOptions}
-                                                    onChange={this.handleproficencyChange}
+                                                    error={
+                                                        this.state
+                                                            .proficencyError
+                                                    }
+                                                    value={
+                                                        this.state
+                                                            .proficencyOption
+                                                    }
+                                                    options={
+                                                        this.state
+                                                            .proficencyOptions
+                                                    }
+                                                    onChange={
+                                                        this
+                                                            .handleproficencyChange
+                                                    }
                                                 />
                                             </Form.Field>
                                         </Form>
                                     </Modal.Content>
                                     <Modal.Actions>
                                         <Button.Group>
-                                            <Button onClick={() => this.closeModal("addSkill")}>Cancel</Button>
+                                            <Button
+                                                onClick={() =>
+                                                    this.closeModal("addSkill")
+                                                }
+                                            >
+                                                Cancel
+                                            </Button>
                                             <Button.Or />
-                                            <Button positive loading={this.state.formLoading} onClick={this.addSkill}>Add</Button>
+                                            <Button
+                                                positive
+                                                loading={this.state.formLoading}
+                                                onClick={this.addSkill}
+                                            >
+                                                Add
+                                            </Button>
                                         </Button.Group>
                                     </Modal.Actions>
                                 </Modal>
@@ -490,15 +718,23 @@ class Profile extends Component {
                             {/* Update profile */}
                             <TransitionablePortal
                                 open={this.state.updateProfileIsOpen}
-                                transition={{ animation: "scale", duration: 300 }}
+                                transition={{
+                                    animation: "scale",
+                                    duration: 300
+                                }}
                             >
                                 <Modal
                                     closeIcon
                                     size="small"
-                                    onClose={() => this.closeModal("updateProfile")}
+                                    onClose={() =>
+                                        this.closeModal("updateProfile")
+                                    }
                                     open={this.state.updateProfileIsOpen}
                                 >
-                                    <Header icon="edit" content="Update profile details" />
+                                    <Header
+                                        icon="edit"
+                                        content="Update profile details"
+                                    />
                                     <Modal.Content>
                                         <Form loading={this.state.formLoading}>
                                             <Form.Group widths="equal">
@@ -511,8 +747,12 @@ class Profile extends Component {
                                                         name="name"
                                                         value={this.state.name}
                                                         fluid
-                                                        error={this.state.nameError}
-                                                        onChange={this.handleChange}
+                                                        error={
+                                                            this.state.nameError
+                                                        }
+                                                        onChange={
+                                                            this.handleChange
+                                                        }
                                                     />
                                                 </Form.Field>
                                                 <Form.Field>
@@ -522,25 +762,42 @@ class Profile extends Component {
                                                         icon="building"
                                                         placeholder="Occupation"
                                                         name="occupation"
-                                                        value={this.state.occupation}
+                                                        value={
+                                                            this.state
+                                                                .occupation
+                                                        }
                                                         fluid
-                                                        error={this.state.occupationError}
-                                                        onChange={this.handleChange}
+                                                        error={
+                                                            this.state
+                                                                .occupationError
+                                                        }
+                                                        onChange={
+                                                            this.handleChange
+                                                        }
                                                     />
                                                 </Form.Field>
                                             </Form.Group>
                                             <Form.Group widths="equal">
                                                 <Form.Field>
-                                                    <label>Primary address:</label>
+                                                    <label>
+                                                        Primary address:
+                                                    </label>
                                                     <Input
                                                         type="string"
                                                         icon="address book"
                                                         placeholder="Address"
                                                         name="address"
-                                                        value={this.state.address}
+                                                        value={
+                                                            this.state.address
+                                                        }
                                                         fluid
-                                                        error={this.state.addressError}
-                                                        onChange={this.handleChange}
+                                                        error={
+                                                            this.state
+                                                                .addressError
+                                                        }
+                                                        onChange={
+                                                            this.handleChange
+                                                        }
                                                     />
                                                 </Form.Field>
                                                 <Form.Field>
@@ -552,28 +809,48 @@ class Profile extends Component {
                                                         name="phone"
                                                         value={this.state.phone}
                                                         fluid
-                                                        error={this.state.phoneError}
-                                                        onChange={this.handleChange}
+                                                        error={
+                                                            this.state
+                                                                .phoneError
+                                                        }
+                                                        onChange={
+                                                            this.handleChange
+                                                        }
                                                     />
                                                 </Form.Field>
                                             </Form.Group>
                                             <Form.Group>
-                                                <TextArea placeholder="Short biography" 
+                                                <TextArea
+                                                    placeholder="Short biography"
                                                     name="bio"
                                                     rows={5}
                                                     value={this.state.bio}
                                                     fluid
                                                     error={this.state.bioError}
-                                                    onChange={this.handleChange}>
-                                                </TextArea>
+                                                    onChange={this.handleChange}
+                                                />
                                             </Form.Group>
                                         </Form>
                                     </Modal.Content>
                                     <Modal.Actions>
                                         <Button.Group>
-                                            <Button onClick={() => this.closeModal("updateProfile")}>Cancel</Button>
+                                            <Button
+                                                onClick={() =>
+                                                    this.closeModal(
+                                                        "updateProfile"
+                                                    )
+                                                }
+                                            >
+                                                Cancel
+                                            </Button>
                                             <Button.Or />
-                                            <Button positive loading={this.state.formLoading} onClick={this.updateProfile}>Update</Button>
+                                            <Button
+                                                positive
+                                                loading={this.state.formLoading}
+                                                onClick={this.updateProfile}
+                                            >
+                                                Update
+                                            </Button>
                                         </Button.Group>
                                     </Modal.Actions>
                                 </Modal>
@@ -582,7 +859,7 @@ class Profile extends Component {
                     </Grid.Row>
                 </Grid>
             </div>
-        )
+        );
     }
 }
 

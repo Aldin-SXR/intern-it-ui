@@ -13,7 +13,6 @@ import {
 import { SemanticToastContainer } from "react-semantic-toasts";
 import "react-semantic-toasts/styles/react-semantic-alert.css";
 
-import Validator from "../utils/validationUtils";
 import * as Toast from "../utils/toaster";
 
 /* Import images */
@@ -84,6 +83,7 @@ class Register extends Component {
         ];
 
         return (
+            // eslint-disable-next-line
             <div id="login-form" id="landing_header">
                 <div className="layer">
                     <style>

@@ -26,7 +26,7 @@ const SkillDialog = ({ open, name, image, description, saveState }) => (
         </Modal.Content>
         <Modal.Actions>
             <Button
-                color="blue"
+                color="green"
                 onClick={() => {
                     Toast.make(
                         "success",
@@ -38,7 +38,7 @@ const SkillDialog = ({ open, name, image, description, saveState }) => (
                 <Icon name="checkmark" /> Enroll
             </Button>
             <Button
-                color="green"
+                color="blue"
                 onClick={() => {
                     saveState("open", false);
                 }}

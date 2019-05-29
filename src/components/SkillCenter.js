@@ -6,9 +6,7 @@ import {
     Form,
     Dropdown,
     Card,
-    Button,
-    Divider,
-    Modal
+    Button
 } from "semantic-ui-react";
 import SkillDialog from "./SkillDialog";
 
