@@ -6,7 +6,8 @@ import {
     Form,
     Dropdown,
     Card,
-    Button
+    Button,
+    Divider
 } from "semantic-ui-react";
 
 class SkillCenter extends Component {
@@ -47,10 +48,8 @@ class SkillCenter extends Component {
                     "This article is aimed at junior developers, but may interest anyone as a bank of useful tips on how to grow some good habits."
             }
         ],
-        datesRange: "",
         profession: "it",
         proficiency: "all",
-        pageSize: 5,
         mobile: false
     };
 
@@ -143,7 +142,7 @@ class SkillCenter extends Component {
                             </Form>
                         </Grid.Column>
                     </Grid.Row>
-                    <Grid.Row columns={3} style={{ marginTop: "-5%" }}>
+                    <Grid.Row columns={4} style={{ marginTop: "-7%" }}>
                         {this.state.skills.map((item, index) => {
                             return (
                                 <Grid.Column key={index}>
@@ -152,7 +151,7 @@ class SkillCenter extends Component {
                                         header={item.name}
                                         description={item.description}
                                         style={{
-                                            width: "450px"
+                                            width: "500px"
                                         }}
                                         extra={
                                             <div>
