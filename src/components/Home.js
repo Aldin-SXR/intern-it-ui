@@ -20,17 +20,6 @@ class Home extends Component {
         this.state = {
             interns: [
                 {
-                    name: "Lena B.",
-                    score: "477",
-                    image:
-                        "https://react.semantic-ui.com/images/avatar/small/lena.png",
-                    rating: "A",
-                    efficacy: "3",
-                    consensus: "80%",
-                    comments:
-                        "Creatine supplementation is the reference compound for increasing muscular creatine levels; there is variability in this increase, however, with some nonresponders."
-                },
-                {
                     name: "Nina B.",
                     score: "512",
                     image:
@@ -38,6 +27,17 @@ class Home extends Component {
                     rating: "A",
                     efficacy: "3",
                     consensus: "85%",
+                    comments:
+                        "Creatine supplementation is the reference compound for increasing muscular creatine levels; there is variability in this increase, however, with some nonresponders."
+                },
+                {
+                    name: "Lena B.",
+                    score: "477",
+                    image:
+                        "https://react.semantic-ui.com/images/avatar/small/lena.png",
+                    rating: "A",
+                    efficacy: "3",
+                    consensus: "80%",
                     comments:
                         "Creatine supplementation is the reference compound for increasing muscular creatine levels; there is variability in this increase, however, with some nonresponders."
                 },
@@ -102,7 +102,8 @@ class Home extends Component {
                                 <Header.Content>
                                     Dashboard
                                     <Header.Subheader>
-                                        An overview of the most recent intern results.
+                                        An overview of the most recent intern
+                                        results.
                                     </Header.Subheader>
                                 </Header.Content>
                             </Header>
@@ -240,9 +241,12 @@ class Home extends Component {
                                             <Feed.Content>
                                                 <Feed.Date content="1 day ago" />
                                                 <Feed.Summary>
+                                                    {/*eslint-disable-next-line*/}
                                                     <a>Lena Bee</a> completed
                                                     the
-                                                                                                        <a> Complete HTML</a> course.
+                                                    {/*eslint-disable-next-line*/}
+                                                    <a> Complete HTML</a>{" "}
+                                                    course.
                                                 </Feed.Summary>
                                             </Feed.Content>
                                         </Feed.Event>
@@ -256,6 +260,7 @@ class Home extends Component {
                                                 <Feed.Date content="3 days ago" />
                                                 <Feed.Summary>
                                                     Nina B.{" "}
+                                                    {/*eslint-disable-next-line*/}
                                                     <a>
                                                         completed Introduction
                                                         to JS course
@@ -272,9 +277,11 @@ class Home extends Component {
                                             <Feed.Content>
                                                 <Feed.Date content="4 days ago" />
                                                 <Feed.Summary>
+                                                    {/*eslint-disable-next-line*/}
                                                     <a>Elliot Baker</a> has
                                                     scored an interview with{" "}
                                                     {""}
+                                                    {/*eslint-disable-next-line*/}
                                                     <a>Mistral</a>.
                                                 </Feed.Summary>
                                             </Feed.Content>
