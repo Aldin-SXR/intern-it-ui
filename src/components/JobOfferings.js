@@ -470,7 +470,7 @@ class Offerings extends Component {
                                                         }
                                                     >
                                                         {this.state
-                                                            .successfulApplication
+                                                            .successfulApplication && this.state.appliedCompany === offer.company
                                                             ? "Applied"
                                                             : "Apply"}
                                                     </Button>

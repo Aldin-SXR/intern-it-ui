@@ -782,6 +782,7 @@ class Profile extends Component {
                                                     fluid
                                                     search
                                                     clearable
+                                                    disabled
                                                     selection
                                                     error={
                                                         this.state.skillError
