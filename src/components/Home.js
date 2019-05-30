@@ -241,8 +241,10 @@ class Home extends Component {
                                             <Feed.Content>
                                                 <Feed.Date content="1 day ago" />
                                                 <Feed.Summary>
+                                                    {/*eslint-disable-next-line*/}
                                                     <a>Lena Bee</a> completed
                                                     the
+                                                    {/*eslint-disable-next-line*/}
                                                     <a> Complete HTML</a>{" "}
                                                     course.
                                                 </Feed.Summary>
@@ -258,6 +260,7 @@ class Home extends Component {
                                                 <Feed.Date content="3 days ago" />
                                                 <Feed.Summary>
                                                     Nina B.{" "}
+                                                    {/*eslint-disable-next-line*/}
                                                     <a>
                                                         completed Introduction
                                                         to JS course
@@ -274,9 +277,11 @@ class Home extends Component {
                                             <Feed.Content>
                                                 <Feed.Date content="4 days ago" />
                                                 <Feed.Summary>
+                                                    {/*eslint-disable-next-line*/}
                                                     <a>Elliot Baker</a> has
                                                     scored an interview with{" "}
                                                     {""}
+                                                    {/*eslint-disable-next-line*/}
                                                     <a>Mistral</a>.
                                                 </Feed.Summary>
                                             </Feed.Content>

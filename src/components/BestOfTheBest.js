@@ -8,7 +8,6 @@ import {
     Divider,
     Form,
     Dropdown,
-    Button,
     Card,
     List,
     Image
@@ -74,12 +73,12 @@ class BestOfTheBest extends Component {
                 avatar: faker.internet.avatar(),
                 company: faker.company.companyName(),
                 position: faker.name.jobTitle()
-            }
+            };
         }
         this.setState({
             overallBest: top1
         });
-    }
+    };
 
     render() {
         return (
@@ -238,20 +237,30 @@ class BestOfTheBest extends Component {
                         <Grid.Column tablet="4" computer="4">
                             <Card fluid color="red">
                                 <Card.Content>
-                                    <Card.Header>
-                                        Overall Ranking
-                                    </Card.Header>
-                                    <Card.Meta>Ranking by skill points, job offers and other parameters.</Card.Meta>
+                                    <Card.Header>Overall Ranking</Card.Header>
+                                    <Card.Meta>
+                                        Ranking by skill points, job offers and
+                                        other parameters.
+                                    </Card.Meta>
                                 </Card.Content>
                                 <Card.Content>
                                     <List ordered>
-                                        {
-                                            this.state.overallBest.map((user, i) => (
+                                        {this.state.overallBest.map(
+                                            (user, i) => (
                                                 <List.Item key={i}>
-                                                    <Image avatar src={user.avatar} />
+                                                    <Image
+                                                        avatar
+                                                        src={user.avatar}
+                                                    />
                                                     <List.Content>
-                                                        <List.Header as='a'>{user.name}</List.Header>
-                                                        <List.Description style={{ color: "gray" }}>
+                                                        <List.Header as="a">
+                                                            {user.name}
+                                                        </List.Header>
+                                                        <List.Description
+                                                            style={{
+                                                                color: "gray"
+                                                            }}
+                                                        >
                                                             {user.company}
                                                         </List.Description>
                                                         <List.Description>
@@ -259,8 +268,8 @@ class BestOfTheBest extends Component {
                                                         </List.Description>
                                                     </List.Content>
                                                 </List.Item>
-                                            ))
-                                        }
+                                            )
+                                        )}
                                     </List>
                                 </Card.Content>
                             </Card>
@@ -271,11 +280,12 @@ class BestOfTheBest extends Component {
                                     <Card.Header>
                                         Ranking by Skill Points
                                     </Card.Header>
-                                    <Card.Meta>Ranking by the amount of gained and utilized Skill Points.</Card.Meta>
+                                    <Card.Meta>
+                                        Ranking by the amount of gained and
+                                        utilized Skill Points.
+                                    </Card.Meta>
                                 </Card.Content>
-                                <Card.Content>
-
-                                </Card.Content>
+                                <Card.Content />
                             </Card>
                         </Grid.Column>
                         <Grid.Column tablet="4" computer="4">
@@ -284,11 +294,12 @@ class BestOfTheBest extends Component {
                                     <Card.Header>
                                         Ranking by Job Offers
                                     </Card.Header>
-                                    <Card.Meta>Ranking by the number of received job offers.</Card.Meta>
+                                    <Card.Meta>
+                                        Ranking by the number of received job
+                                        offers.
+                                    </Card.Meta>
                                 </Card.Content>
-                                <Card.Content>
-
-                                </Card.Content>
+                                <Card.Content />
                             </Card>
                         </Grid.Column>
                     </Grid.Row>

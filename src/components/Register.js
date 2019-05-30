@@ -13,6 +13,7 @@ import {
 import { SemanticToastContainer } from "react-semantic-toasts";
 import "react-semantic-toasts/styles/react-semantic-alert.css";
 
+import Validator from "../utils/validationUtils";
 import * as Toast from "../utils/toaster";
 
 /* Import images */
@@ -36,9 +37,16 @@ class Register extends Component {
             username: "",
             password: "",
             re_password: "",
-            error: false,
             loading: false,
-            error_message: ""
+            // Error variables:
+            error: {
+                name: false,
+                email_address: false,
+                mobile_number: false,
+                username: false,
+                password: false,
+                re_password: false
+            }
         };
         this.initialState = this.state;
     }
@@ -55,6 +63,70 @@ class Register extends Component {
     };
 
     handleRegisterSubmit = e => {
+        let error_state = JSON.parse(JSON.stringify(this.state.error));
+        /** Validate fields */
+
+        let keys = Object.keys(error_state).filter(
+            item => item !== "email_address"
+        );
+
+        keys.forEach(item => {
+            if (!Validator.validateField(this.state[item])) {
+                Toast.make("error", "Empty field", "Please enter a value.");
+                error_state[item] = true;
+                this.setState({
+                    error: error_state
+                });
+            } else {
+                this.setState({
+                    error: error_state
+                });
+            }
+        });
+
+        if (!Validator.validateField(this.state.email_address)) {
+            Toast.make(
+                "error",
+                "Empty field",
+                "Please enter your e-mail address."
+            );
+            error_state["email_address"] = true;
+            this.setState({
+                error: error_state
+            });
+        } else {
+            this.setState({
+                error: error_state
+            });
+        }
+
+        if (!Validator.validateEmail(this.state.email_address)) {
+            Toast.make(
+                "error",
+                "Invalid e-mail",
+                "Please enter a valid e-mail address."
+            );
+            error_state["email_address"] = true;
+            this.setState({
+                error: error_state
+            });
+        } else {
+            this.setState({
+                error: error_state
+            });
+        }
+
+        if (
+            !Validator.validateEmail(this.state.email_address) ||
+            !Validator.validateField(this.state.password) ||
+            !Validator.validateField(this.state.re_password) ||
+            !Validator.validateField(this.state.name) ||
+            !Validator.validateField(this.state.mobile_number) ||
+            !Validator.validateField(this.state.username)
+        ) {
+            return;
+        }
+
         this.setState({
             loading: true
         });
@@ -98,7 +170,13 @@ class Register extends Component {
                     <SemanticToastContainer position="top-right" />
                     <Menu fixed="top" stackable>
                         {/* <Container> */}
-                        <Menu.Item as="a" header onClick={ () => { this.props.history.push("/") } }>
+                        <Menu.Item
+                            as="a"
+                            header
+                            onClick={() => {
+                                this.props.history.push("/");
+                            }}
+                        >
                             <Image
                                 src={logo}
                                 style={{ marginRight: "0.5em", width: "3em" }}
@@ -148,6 +226,9 @@ class Register extends Component {
                                                         this
                                                             .handleRegisterChange
                                                     }
+                                                    error={
+                                                        this.state.error.name
+                                                    }
                                                 />
                                                 <Form.Input
                                                     fluid
@@ -159,6 +240,10 @@ class Register extends Component {
                                                         this
                                                             .handleRegisterChange
                                                     }
+                                                    error={
+                                                        this.state.error
+                                                            .email_address
+                                                    }
                                                 />
                                                 <Form.Input
                                                     fluid
@@ -169,6 +254,10 @@ class Register extends Component {
                                                     onChange={
                                                         this
                                                             .handleRegisterChange
+                                                    }
+                                                    error={
+                                                        this.state.error
+                                                            .mobile_number
                                                     }
                                                 />
                                                 <Form.Dropdown
@@ -193,6 +282,10 @@ class Register extends Component {
                                                         this
                                                             .handleRegisterChange
                                                     }
+                                                    error={
+                                                        this.state.error
+                                                            .username
+                                                    }
                                                 />
                                                 <Form.Input
                                                     fluid
@@ -205,6 +298,10 @@ class Register extends Component {
                                                         this
                                                             .handleRegisterChange
                                                     }
+                                                    error={
+                                                        this.state.error
+                                                            .password
+                                                    }
                                                 />
                                                 <Form.Input
                                                     fluid
@@ -216,6 +313,10 @@ class Register extends Component {
                                                     onChange={
                                                         this
                                                             .handleRegisterChange
+                                                    }
+                                                    error={
+                                                        this.state.error
+                                                            .re_password
                                                     }
                                                 />
 
