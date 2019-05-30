@@ -37,12 +37,18 @@ class BestOfTheBest extends Component {
     handleDateRangeChange = (event, { name, value }) => {
         if (this.state.hasOwnProperty(name)) {
             this.setState({ [name]: value });
+            this.generateData();
         }
     };
 
-    handleProfessionChange = (e, { value }) =>
+    handleProfessionChange = (e, { value }) => {
         this.setState({ profession: value });
-    handlePageSizeChange = (e, { value }) => this.setState({ pageSize: value });
+        this.generateData();
+    };
+
+    handlePageSizeChange = (e, { value }) => {
+        this.setState({ pageSize: value }, () => this.generateData());
+    };
 
     updateDimensions = () => {
         if (window.innerWidth <= 768) {
@@ -67,6 +73,8 @@ class BestOfTheBest extends Component {
 
     generateData = () => {
         let top1 = [];
+        let top2 = [];
+        let top3 = [];
         for (let i = 0; i < this.state.pageSize; i++) {
             top1[i] = {
                 name: `${faker.name.firstName()} ${faker.name.lastName()}`,
@@ -74,9 +82,23 @@ class BestOfTheBest extends Component {
                 company: faker.company.companyName(),
                 position: faker.name.jobTitle()
             };
+            top2[i] = {
+                name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+                avatar: faker.internet.avatar(),
+                company: faker.company.companyName(),
+                position: faker.name.jobTitle()
+            };
+            top3[i] = {
+                name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+                avatar: faker.internet.avatar(),
+                company: faker.company.companyName(),
+                position: faker.name.jobTitle()
+            };
         }
         this.setState({
-            overallBest: top1
+            overallBest: top1,
+            skillPointBest: top2,
+            offerBest: top3
         });
     };
 
@@ -285,6 +307,35 @@ class BestOfTheBest extends Component {
                                         utilized Skill Points.
                                     </Card.Meta>
                                 </Card.Content>
+                                <Card.Content>
+                                    <List ordered>
+                                        {this.state.skillPointBest.map(
+                                            (user, i) => (
+                                                <List.Item key={i}>
+                                                    <Image
+                                                        avatar
+                                                        src={user.avatar}
+                                                    />
+                                                    <List.Content>
+                                                        <List.Header as="a">
+                                                            {user.name}
+                                                        </List.Header>
+                                                        <List.Description
+                                                            style={{
+                                                                color: "gray"
+                                                            }}
+                                                        >
+                                                            {user.company}
+                                                        </List.Description>
+                                                        <List.Description>
+                                                            {user.position}
+                                                        </List.Description>
+                                                    </List.Content>
+                                                </List.Item>
+                                            )
+                                        )}
+                                    </List>
+                                </Card.Content>
                                 <Card.Content />
                             </Card>
                         </Grid.Column>
@@ -299,9 +350,39 @@ class BestOfTheBest extends Component {
                                         offers.
                                     </Card.Meta>
                                 </Card.Content>
+                                <Card.Content>
+                                    <List ordered>
+                                        {this.state.offerBest.map((user, i) => (
+                                            <List.Item key={i}>
+                                                <Image
+                                                    avatar
+                                                    src={user.avatar}
+                                                />
+                                                <List.Content>
+                                                    <List.Header as="a">
+                                                        {user.name}
+                                                    </List.Header>
+                                                    <List.Description
+                                                        style={{
+                                                            color: "gray"
+                                                        }}
+                                                    >
+                                                        {user.company}
+                                                    </List.Description>
+                                                    <List.Description>
+                                                        {user.position}
+                                                    </List.Description>
+                                                </List.Content>
+                                            </List.Item>
+                                        ))}
+                                    </List>
+                                </Card.Content>
                                 <Card.Content />
                             </Card>
                         </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column computer="14" tablet="14" />
                     </Grid.Row>
                 </Grid>
             </div>

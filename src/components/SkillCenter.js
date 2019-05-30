@@ -11,7 +11,8 @@ import {
     Segment,
     Image,
     Label,
-    Rating
+    Rating,
+    Pagination
 } from "semantic-ui-react";
 import SkillDialog from "./SkillDialog";
 
@@ -67,7 +68,8 @@ class SkillCenter extends Component {
         proficiency: "all",
         mobile: false,
         open: false,
-        loadingSegment: false
+        loadingSegment: false,
+        pageSize: 5
     };
 
     handleProfessionChange = (e, { value }) => {
@@ -136,6 +138,15 @@ class SkillCenter extends Component {
         );
     };
 
+    handlePageChange = () => {
+        this.setState({ loadingSegment: true });
+        setTimeout(() => {
+            this.setState({
+                loadingSegment: false
+            });
+        }, 500);
+    };
+
     componentWillMount = () => {
         this.updateDimensions();
     };
@@ -169,7 +180,7 @@ class SkillCenter extends Component {
                         </Grid.Column>
                     </Grid.Row>
                     <Divider section />
-                    <Grid.Row columns="3">
+                    <Grid.Row columns="4">
                         <Grid.Column>
                             <Form>
                                 <Form.Field>
@@ -204,10 +215,50 @@ class SkillCenter extends Component {
                                 </Form.Field>
                             </Form>
                         </Grid.Column>
+                        <Grid.Column floated="right">
+                            <Form>
+                                <Form.Field
+                                    style={{
+                                        width: !this.state.mobile
+                                            ? "40%"
+                                            : "100%"
+                                    }}
+                                >
+                                    <label>Page size:</label>
+                                    <Dropdown
+                                        placeholder="Show..."
+                                        selection
+                                        compact
+                                        fluid
+                                        value={this.state.pageSize}
+                                        onChange={this.handlePageSizeChange}
+                                        options={[
+                                            { key: "5", value: 5, text: "5" },
+                                            {
+                                                key: "10",
+                                                value: 10,
+                                                text: "10"
+                                            },
+                                            {
+                                                key: "15",
+                                                value: 15,
+                                                text: "15"
+                                            },
+                                            {
+                                                key: "25",
+                                                value: 25,
+                                                text: "25"
+                                            },
+                                            { key: "50", value: 50, text: "50" }
+                                        ]}
+                                    />
+                                </Form.Field>
+                            </Form>
+                        </Grid.Column>
                     </Grid.Row>
                     <Grid.Row columns={4}>
                         <Grid.Column computer="14" tablet="14">
-                            <Segment loading={this.state.loadingSegment}>
+                            <Segment basic loading={this.state.loadingSegment}>
                                 <Card.Group centered>
                                     {this.state.skills.map((item, index) => {
                                         return (
@@ -244,7 +295,10 @@ class SkillCenter extends Component {
                                                         {item.description}
                                                     </Card.Description>
                                                 </Card.Content>
-                                                <Card.Content extra>
+                                                <Card.Content
+                                                    extra
+                                                    textAlign="center"
+                                                >
                                                     <Button.Group>
                                                         <Button
                                                             color="teal"
@@ -278,6 +332,33 @@ class SkillCenter extends Component {
                                     })}
                                 </Card.Group>
                             </Segment>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column
+                            computer="14"
+                            tablet="14"
+                            style={
+                                this.state.mobile
+                                    ? { textAlign: "-webkit-center" }
+                                    : null
+                            }
+                        >
+                            <Pagination
+                                style={
+                                    this.state.mobile
+                                        ? null
+                                        : { float: "right" }
+                                }
+                                boundaryRange={0}
+                                defaultActivePage={1}
+                                ellipsisItem={null}
+                                firstItem={null}
+                                onPageChange={this.handlePageChange}
+                                lastItem={null}
+                                siblingRange={1}
+                                totalPages={10}
+                            />
                         </Grid.Column>
                     </Grid.Row>
                     <SkillDialog

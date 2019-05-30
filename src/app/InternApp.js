@@ -15,16 +15,28 @@ import faker from "faker";
 
 import state from "../initialState";
 import MenuSeparator from "../components/MenuSeparator";
+import Formatter from "../utils/formatUtils";
 
 import logo from "./../img/logo.png";
+import offer1 from "../img/offers/offer1.jpg";
+import offer2 from "../img/offers/offer2.jpg";
+import offer3 from "../img/offers/offer3.jpg";
+import offer4 from "../img/offers/offer4.jpg";
+import offer5 from "../img/offers/offer5.jpg";
+import offer6 from "../img/offers/offer6.jpg";
+import offer7 from "../img/offers/offer7.jpg";
 
 const initialState = { isLoading: false, results: [], value: "" };
+let offerPics = [
+    offer1, offer2, offer3, offer4,
+    offer5, offer6, offer7
+];
 
 const getResults = () =>
     _.times(5, () => ({
         title: faker.name.jobTitle(),
         description: faker.company.companyName(),
-        image: faker.image.avatar(),
+        image: Formatter.shuffle(offerPics)[0],
         price: faker.finance.amount(900, 4000, 2, "$")
     }));
 
