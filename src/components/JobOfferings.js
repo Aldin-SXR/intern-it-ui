@@ -319,7 +319,7 @@ class Offerings extends Component {
                     </Grid.Row>
                     <Grid.Row>
                         <Grid.Column tablet="14" computer="14">
-                            <Segment loading={this.state.loadingSegment}>
+                            <Segment basic loading={this.state.loadingSegment} >
                                 <Card.Group stackable centered>
                                     {
                                         this.state.jobOffers.map((offer, i) => (
@@ -366,9 +366,9 @@ class Offerings extends Component {
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
-                        <Grid.Column computer="14" tablet="14">
+                        <Grid.Column computer="14" tablet="14" style={ this.state.mobile ? { textAlign: "-webkit-center" } : null }>
                             <Pagination
-                                style={{ float: "right" }}
+                                style={ this.state.mobile ? null : { float: "right" }}
                                 boundaryRange={1}
                                 defaultActivePage={1}
                                 ellipsisItem={'...'}
@@ -382,7 +382,7 @@ class Offerings extends Component {
                     </Grid.Row>
                 </Grid>
                 {/* Modals */}
-                {/* Delete skill */}
+                {/* Apply for an offer */}
                 <TransitionablePortal
                     open={this.state.applyForOfferIsOpen}
                     transition={{ animation: "scale", duration: 300 }}
