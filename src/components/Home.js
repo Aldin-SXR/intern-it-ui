@@ -20,17 +20,6 @@ class Home extends Component {
         this.state = {
             interns: [
                 {
-                    name: "Lena B.",
-                    score: "477",
-                    image:
-                        "https://react.semantic-ui.com/images/avatar/small/lena.png",
-                    rating: "A",
-                    efficacy: "3",
-                    consensus: "80%",
-                    comments:
-                        "Creatine supplementation is the reference compound for increasing muscular creatine levels; there is variability in this increase, however, with some nonresponders."
-                },
-                {
                     name: "Nina B.",
                     score: "512",
                     image:
@@ -38,6 +27,17 @@ class Home extends Component {
                     rating: "A",
                     efficacy: "3",
                     consensus: "85%",
+                    comments:
+                        "Creatine supplementation is the reference compound for increasing muscular creatine levels; there is variability in this increase, however, with some nonresponders."
+                },
+                {
+                    name: "Lena B.",
+                    score: "477",
+                    image:
+                        "https://react.semantic-ui.com/images/avatar/small/lena.png",
+                    rating: "A",
+                    efficacy: "3",
+                    consensus: "80%",
                     comments:
                         "Creatine supplementation is the reference compound for increasing muscular creatine levels; there is variability in this increase, however, with some nonresponders."
                 },
@@ -102,7 +102,8 @@ class Home extends Component {
                                 <Header.Content>
                                     Dashboard
                                     <Header.Subheader>
-                                        An overview of the most recent intern results.
+                                        An overview of the most recent intern
+                                        results.
                                     </Header.Subheader>
                                 </Header.Content>
                             </Header>
@@ -242,7 +243,8 @@ class Home extends Component {
                                                 <Feed.Summary>
                                                     <a>Lena Bee</a> completed
                                                     the
-                                                                                                        <a> Complete HTML</a> course.
+                                                    <a> Complete HTML</a>{" "}
+                                                    course.
                                                 </Feed.Summary>
                                             </Feed.Content>
                                         </Feed.Event>
