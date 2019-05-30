@@ -28,7 +28,14 @@ class Login extends Component {
             password: "",
             error: false,
             loading: false,
-            error_message: ""
+            error_message: "",
+            allowedUser: {
+                username: "aldin@tribeos.io",
+                password: "tribeOS2019testing"
+            },
+            // Error variables
+            usernameError: false,
+            passwordError: false
         };
     }
 
@@ -61,6 +68,78 @@ class Login extends Component {
     };
 
     submitForm = () => {
+        /** Validate fields */
+        if (!Validator.validateField(this.state.email)) {
+            Toast.make(
+                "error",
+                "Empty field",
+                "Please enter your e-mail address."
+            );
+            this.setState({
+                usernameError: true
+            });
+        } else {
+            this.setState({
+                usernameError: false
+            });
+        }
+        
+        if (!Validator.validateField(this.state.password)) {
+            Toast.make(
+                "error",
+                "Empty field",
+                "Please enter your password."
+            );
+            this.setState({
+                passwordError: true
+            });
+        } else {
+            this.setState({
+                passwordError: false
+            });
+        }
+
+        if (!Validator.validateField(this.state.email) || !Validator.validateField(this.state.password)) {
+            return;
+        }
+
+        if (!Validator.validateEmail(this.state.email)) {
+            Toast.make(
+                "error",
+                "Invalid e-mail",
+                "Please enter a valid e-mail address."
+            );
+            this.setState({
+                usernameError: true
+            });
+        } else {
+            this.setState({
+                usernameError: false
+            });
+        }
+
+        if (!Validator.validateEmail(this.state.email)) {
+            return;
+        }
+        
+        if (this.state.email !== this.state.allowedUser.username) {
+            Toast.make(
+                "error",
+                "Invalid email",
+                "This email is not registered with our service."
+            );
+            return;
+        }
+
+        if (this.state.password !== this.state.allowedUser.password) {
+            Toast.make(
+                "error",
+                "Invalid password",
+                "The password you provided is incorrect. Please try again."
+            );
+            return;
+        }
+
         this.setState({
             loading: true
         });
@@ -98,7 +177,7 @@ class Login extends Component {
                     <SemanticToastContainer position="top-right" />
                     <Menu fixed="top" stackable>
                         {/* <Container> */}
-                        <Menu.Item as="a" header onClick={ () => { this.props.history.push("/") } }>
+                        <Menu.Item as="a" header onClick={() => { this.props.history.push("/") }}>
                             <Image
                                 src={logo}
                                 style={{ marginRight: "0.5em", width: "3em" }}
@@ -145,6 +224,7 @@ class Login extends Component {
                                                     iconPosition="left"
                                                     placeholder="E-mail address"
                                                     onChange={this.handleChange}
+                                                    error={this.state.usernameError}
                                                 />
                                                 <Form.Input
                                                     fluid
@@ -154,6 +234,7 @@ class Login extends Component {
                                                     placeholder="Password"
                                                     type="password"
                                                     onChange={this.handleChange}
+                                                    error={this.state.passwordError}
                                                 />
                                                 <Button
                                                     color="blue"
@@ -174,7 +255,7 @@ class Login extends Component {
                                                 </p>
                                             </Message>
                                         )}
-                                        <Message>
+                                        <Message color="blue">
                                             New to us?{" "}
                                             <span
                                                 style={{

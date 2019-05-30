@@ -7,7 +7,11 @@ import {
     Dropdown,
     Card,
     Button,
-    Divider
+    Divider,
+    Segment,
+    Image,
+    Label,
+    Rating
 } from "semantic-ui-react";
 import SkillDialog from "./SkillDialog";
 
@@ -34,21 +38,24 @@ class SkillCenter extends Component {
                 image:
                     "http://www.purelogics.net/blog/wp-content/uploads/2019/01/javascript.png",
                 description:
-                    "Learn how to code in one of the most in-demand languages of today. Get the newest, freshest skills available!"
+                    "Learn how to code in one of the most in-demand languages of today. Get the newest, freshest skills available!",
+                rating: 5
             },
             {
                 name: "Complete HTML Course",
                 image:
                     "https://i.udemycdn.com/course/750x422/766592_66ac_4.jpg",
                 description:
-                    "HTML markup is the heart of any web application and this course will teach you the fundamentals of HTML."
+                    "HTML markup is the heart of any web application and this course will teach you the fundamentals of HTML.",
+                rating: 4
             },
             {
                 name: "Industry-Standard Tips for developers.",
                 image:
                     "https://cdn-images-1.medium.com/max/2400/1*atrQqA50p5ctc_HGyZiKuA.png",
                 description:
-                    "This article is aimed at junior developers, but may interest anyone as a bank of useful tips on how to grow some good habits."
+                    "This article is aimed at junior developers, but may interest anyone as a bank of useful tips on how to grow some good habits.",
+                rating: 5
             }
         ],
         selectedItem: {
@@ -59,23 +66,36 @@ class SkillCenter extends Component {
         profession: "it",
         proficiency: "all",
         mobile: false,
-        open: false
+        open: false,
+        loadingSegment: false,
     };
 
-    handleDateRangeChange = (event, { name, value }) => {
-        if (this.state.hasOwnProperty(name)) {
-            this.setState({ [name]: value });
-        }
-    };
-
-    handleProfessionChange = (e, { value }) =>
-        this.setState({ profession: value });
+    handleProfessionChange = (e, { value }) => {
+        this.setState({ profession: value, loadingSegment: true });
+        setTimeout(() => {
+            this.setState({
+                loadingSegment: false
+            });
+        }, 500);
+    }
 
     handleProficiencyChange = (e, { value }) => {
-        this.setState({ proficiency: value });
+        this.setState({ proficiency: value, loadingSegment: true });
+        setTimeout(() => {
+            this.setState({
+                loadingSegment: false
+            });
+        }, 500);
     };
 
-    handlePageSizeChange = (e, { value }) => this.setState({ pageSize: value });
+    handlePageSizeChange = (e, { value }) => {
+        this.setState({ pageSize: value, loadingSegment: true });
+        setTimeout(() => {
+            this.setState({
+                loadingSegment: false
+            });
+        }, 500);
+    }
 
     updateDimensions = () => {
         if (window.innerWidth <= 768) {
@@ -88,6 +108,10 @@ class SkillCenter extends Component {
             });
         }
     };
+
+    handleRate = () => {
+        Toast.make("success", "Successfully rating", "Course rating has been successfully updated.");
+    }
 
     saveState = (name, state) => {
         this.setState({
@@ -114,6 +138,12 @@ class SkillCenter extends Component {
 
     componentDidMount = () => {
         window.addEventListener("resize", this.updateDimensions);
+        this.setState({ loadingSegment: true });
+        setTimeout(() => {
+            this.setState({
+                loadingSegment: false
+            });
+        }, 500);
     };
 
     render() {
@@ -135,7 +165,7 @@ class SkillCenter extends Component {
                         </Grid.Column>
                     </Grid.Row>
                     <Divider section />
-                    <Grid.Row columns="3" style={{ height: "20em" }}>
+                    <Grid.Row columns="3">
                         <Grid.Column>
                             <Form>
                                 <Form.Field>
@@ -171,49 +201,58 @@ class SkillCenter extends Component {
                             </Form>
                         </Grid.Column>
                     </Grid.Row>
-                    <Grid.Row columns={4} style={{ marginTop: "-7%" }}>
-                        {this.state.skills.map((item, index) => {
-                            return (
-                                <Grid.Column key={index}>
-                                    <Card
-                                        image={item.image}
-                                        header={item.name}
-                                        description={item.description}
-                                        style={{
-                                            width: "500px"
-                                        }}
-                                        extra={
-                                            <div>
-                                                <Button
-                                                    color="green"
-                                                    onClick={() => {
-                                                        Toast.make(
-                                                            "success",
-                                                            "Enrollment successful!",
-                                                            "Enrolled into ".concat(
-                                                                item.name
-                                                            )
-                                                        );
-                                                    }}
-                                                >
-                                                    Enroll
-                                                </Button>
-                                                <Button
-                                                    color="blue"
-                                                    onClick={() => {
-                                                        this.setSelectedItem(
-                                                            item
-                                                        );
-                                                    }}
-                                                >
-                                                    View
-                                                </Button>
-                                            </div>
-                                        }
-                                    />
-                                </Grid.Column>
-                            );
-                        })}
+                    <Grid.Row columns={4}>
+                        <Grid.Column computer="14" tablet="14">
+                            <Segment loading={this.state.loadingSegment}>
+                                <Card.Group centered>
+                                    {this.state.skills.map((item, index) => {
+                                        return (
+                                            <Card style={{
+                                                width: "500px"
+                                            }}>
+                                                <Image src={item.image} wrapped ui={false} />
+                                                <Label as='a' color="blue" attached="top left">
+                                                    <Rating icon="star" maxRating={5} defaultRating={item.rating} onRate={this.handleRate}/>
+                                                </Label>
+                                                <Card.Content>
+                                                    <Card.Header>{item.name}</Card.Header>
+                                                    <Card.Description>{item.description}</Card.Description>
+                                                </Card.Content>
+                                                <Card.Content extra>
+                                                    <Button.Group>
+                                                        <Button
+                                                            color="teal"
+                                                            onClick={() => {
+                                                                this.setSelectedItem(
+                                                                    item
+                                                                );
+                                                            }}
+                                                        >
+                                                            View
+                                                        </Button>
+                                                        <Button.Or />
+                                                        <Button
+                                                            color="blue"
+                                                            onClick={() => {
+                                                                Toast.make(
+                                                                    "success",
+                                                                    "Enrollment successful!",
+                                                                    "Enrolled into ".concat(
+                                                                        item.name
+                                                                    )
+                                                                );
+                                                            }}
+                                                        >
+                                                            Enroll
+                                                    </Button>
+                                                    </Button.Group>
+                                                </Card.Content>
+                                            </Card>
+                                        );
+                                    })}
+                                </Card.Group>
+                            </Segment>
+                        </Grid.Column>
                     </Grid.Row>
                     <SkillDialog
                         saveState={this.saveState}
