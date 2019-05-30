@@ -34,9 +34,9 @@ const PrivateRoute = ({ components: [Component1, Component2], ...rest }) => (
     <Route
         {...rest}
         render={props => {
-            // let token = localStorage.getItem("loginToken");
+            let validationToken = localStorage.getItem("loginToken");
             let token = "intern";
-            return token ? (
+            return validationToken ? (
                 <ScrollToTop location={props.location}>
                     {/* Route depending on admin privileges */
                     // Validator.isSuperuser(token)

@@ -115,7 +115,7 @@ class AdminApp extends Component {
     handleResultSelect = (e, { result }) => {
         this.setState({ value: result.title });
         this.props.history.push("/offerings");
-    }
+    };
 
     handleSearchChange = (e, { value }) => {
         this.setState({ isLoading: true, value });
@@ -144,12 +144,13 @@ class AdminApp extends Component {
         }, 300);
     };
 
-    componentDidUpdate = prevProps => { };
+    componentDidUpdate = prevProps => {};
 
-    logOutIfInvalid = () => { };
+    logOutIfInvalid = () => {};
 
     /* Log out */
     logOut = () => {
+        localStorage.clear();
         this.props.history.push("/");
     };
 
@@ -175,7 +176,12 @@ class AdminApp extends Component {
             <div className="App">
                 <Sidebar.Pushable style={{ transform: "none" }}>
                     <Responsive maxWidth={768}>
-                        <Menu fixed="top" borderless style={{ zIndex: 200 }} fluid>
+                        <Menu
+                            fixed="top"
+                            borderless
+                            style={{ zIndex: 200 }}
+                            fluid
+                        >
                             <Menu.Item
                                 as="a"
                                 header
@@ -186,10 +192,15 @@ class AdminApp extends Component {
                             <Menu.Menu position="right">
                                 <Menu.Item
                                     name="profile"
-                                    onClick={() => this.handleRouteChange("profile")}
+                                    onClick={() =>
+                                        this.handleRouteChange("profile")
+                                    }
                                 >
                                     <Icon name="user" />
-                                    &nbsp; {this.state.name}<Label basic color="red" size="small">350 SP</Label>
+                                    &nbsp; {this.state.name}
+                                    <Label basic color="red" size="small">
+                                        350 SP
+                                    </Label>
                                 </Menu.Item>
                                 <Menu.Item>
                                     <Icon name="power" />
@@ -223,7 +234,7 @@ class AdminApp extends Component {
                                     category
                                     input={{
                                         style: {
-                                            width: '30em'
+                                            width: "30em"
                                         }
                                     }}
                                     loading={isLoading}
@@ -242,14 +253,30 @@ class AdminApp extends Component {
                                 />
                             </Menu.Item>
                             <Menu.Menu position="right">
-                                <Menu.Item name="profile" onClick={() => this.handleRouteChange("profile")}>
+                                <Menu.Item
+                                    name="profile"
+                                    onClick={() =>
+                                        this.handleRouteChange("profile")
+                                    }
+                                >
                                     <Icon name="user" />
                                     &nbsp; {this.state.name}
                                 </Menu.Item>
-                                <Menu.Item compact>
-                                    <Label basic color="red" size="large" title="My Skill Points">350 SP</Label>
+                                <Menu.Item>
+                                    <Label
+                                        basic
+                                        color="red"
+                                        size="large"
+                                        title="My Skill Points"
+                                    >
+                                        350 SP
+                                    </Label>
                                 </Menu.Item>
-                                <Menu.Item as="a" title="Log out" onClick={this.logOut}>
+                                <Menu.Item
+                                    as="a"
+                                    title="Log out"
+                                    onClick={this.logOut}
+                                >
                                     <Icon name="power off" />
                                 </Menu.Item>
                             </Menu.Menu>

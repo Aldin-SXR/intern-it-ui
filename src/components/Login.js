@@ -83,13 +83,9 @@ class Login extends Component {
                 usernameError: false
             });
         }
-        
+
         if (!Validator.validateField(this.state.password)) {
-            Toast.make(
-                "error",
-                "Empty field",
-                "Please enter your password."
-            );
+            Toast.make("error", "Empty field", "Please enter your password.");
             this.setState({
                 passwordError: true
             });
@@ -99,7 +95,10 @@ class Login extends Component {
             });
         }
 
-        if (!Validator.validateField(this.state.email) || !Validator.validateField(this.state.password)) {
+        if (
+            !Validator.validateField(this.state.email) ||
+            !Validator.validateField(this.state.password)
+        ) {
             return;
         }
 
@@ -121,7 +120,7 @@ class Login extends Component {
         if (!Validator.validateEmail(this.state.email)) {
             return;
         }
-        
+
         if (this.state.email !== this.state.allowedUser.username) {
             Toast.make(
                 "error",
@@ -149,6 +148,7 @@ class Login extends Component {
                     loading: false
                 },
                 () => {
+                    localStorage.setItem("loginToken", "valid");
                     this.props.history.push("/home");
                     Toast.make(
                         "success",
@@ -177,7 +177,13 @@ class Login extends Component {
                     <SemanticToastContainer position="top-right" />
                     <Menu fixed="top" stackable>
                         {/* <Container> */}
-                        <Menu.Item as="a" header onClick={() => { this.props.history.push("/") }}>
+                        <Menu.Item
+                            as="a"
+                            header
+                            onClick={() => {
+                                this.props.history.push("/");
+                            }}
+                        >
                             <Image
                                 src={logo}
                                 style={{ marginRight: "0.5em", width: "3em" }}
@@ -224,7 +230,9 @@ class Login extends Component {
                                                     iconPosition="left"
                                                     placeholder="E-mail address"
                                                     onChange={this.handleChange}
-                                                    error={this.state.usernameError}
+                                                    error={
+                                                        this.state.usernameError
+                                                    }
                                                 />
                                                 <Form.Input
                                                     fluid
@@ -234,7 +242,9 @@ class Login extends Component {
                                                     placeholder="Password"
                                                     type="password"
                                                     onChange={this.handleChange}
-                                                    error={this.state.passwordError}
+                                                    error={
+                                                        this.state.passwordError
+                                                    }
                                                 />
                                                 <Button
                                                     color="blue"

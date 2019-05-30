@@ -67,7 +67,7 @@ class SkillCenter extends Component {
         proficiency: "all",
         mobile: false,
         open: false,
-        loadingSegment: false,
+        loadingSegment: false
     };
 
     handleProfessionChange = (e, { value }) => {
@@ -77,7 +77,7 @@ class SkillCenter extends Component {
                 loadingSegment: false
             });
         }, 500);
-    }
+    };
 
     handleProficiencyChange = (e, { value }) => {
         this.setState({ proficiency: value, loadingSegment: true });
@@ -95,7 +95,7 @@ class SkillCenter extends Component {
                 loadingSegment: false
             });
         }, 500);
-    }
+    };
 
     updateDimensions = () => {
         if (window.innerWidth <= 768) {
@@ -110,8 +110,12 @@ class SkillCenter extends Component {
     };
 
     handleRate = () => {
-        Toast.make("success", "Successfully rating", "Course rating has been successfully updated.");
-    }
+        Toast.make(
+            "success",
+            "Successfully rating",
+            "Course rating has been successfully updated."
+        );
+    };
 
     saveState = (name, state) => {
         this.setState({
@@ -207,16 +211,38 @@ class SkillCenter extends Component {
                                 <Card.Group centered>
                                     {this.state.skills.map((item, index) => {
                                         return (
-                                            <Card style={{
-                                                width: "500px"
-                                            }}>
-                                                <Image src={item.image} wrapped ui={false} />
-                                                <Label as='a' color="blue" attached="top left">
-                                                    <Rating icon="star" maxRating={5} defaultRating={item.rating} onRate={this.handleRate}/>
+                                            <Card
+                                                key={index}
+                                                style={{
+                                                    width: "500px"
+                                                }}
+                                            >
+                                                <Image
+                                                    src={item.image}
+                                                    wrapped
+                                                    ui={false}
+                                                />
+                                                <Label
+                                                    as="a"
+                                                    color="blue"
+                                                    attached="top left"
+                                                >
+                                                    <Rating
+                                                        icon="star"
+                                                        maxRating={5}
+                                                        defaultRating={
+                                                            item.rating
+                                                        }
+                                                        onRate={this.handleRate}
+                                                    />
                                                 </Label>
                                                 <Card.Content>
-                                                    <Card.Header>{item.name}</Card.Header>
-                                                    <Card.Description>{item.description}</Card.Description>
+                                                    <Card.Header>
+                                                        {item.name}
+                                                    </Card.Header>
+                                                    <Card.Description>
+                                                        {item.description}
+                                                    </Card.Description>
                                                 </Card.Content>
                                                 <Card.Content extra>
                                                     <Button.Group>
@@ -244,7 +270,7 @@ class SkillCenter extends Component {
                                                             }}
                                                         >
                                                             Enroll
-                                                    </Button>
+                                                        </Button>
                                                     </Button.Group>
                                                 </Card.Content>
                                             </Card>
