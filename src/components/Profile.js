@@ -39,12 +39,16 @@ class Profile extends Component {
         formLoading: false,
         removeSkillIsOpen: false,
         addSkillIsOpen: false,
-        editSkillIsOpen: false,
+        updateSkillIsOpen: false,
         updateProfileIsOpen: false,
         // skills
         skillOptions: [
             { key: "c++", value: "C++", text: "C++" },
             { key: "c#", value: "C#", text: "C#" },
+            { key: "php", value: "PHP", text: "PHP" },
+            { key: "js", value: "JavaScript", text: "JavaScript" },
+            { key: "blockchain", value: "Blockchain Development", text: "Blockchain Development" },
+            { key: "nodejs", value: "NodeJS", text: "NodeJS" },
             { key: "linux", value: "Linux", text: "Linux" },
             {
                 key: "net",
@@ -80,7 +84,11 @@ class Profile extends Component {
         phoneError: false,
         bioError: false,
         successfulUpdate: false,
-        mobile: false
+        mobile: false,
+        // Selected skill
+        selectedSkillIndex: null,
+        selectedSkillName: "",
+        selectedSkillLevel: ""
     };
 
     updateDimensions = () => {
@@ -184,7 +192,7 @@ class Profile extends Component {
 
     removeSkill = () => {
         let n = JSON.parse(JSON.stringify(this.state.skills));
-        n.splice(0, 1);
+        n.splice(this.state.selectedSkillIndex, 1);
 
         this.setState({
             formLoading: true
@@ -315,6 +323,45 @@ class Profile extends Component {
             [`${name}IsOpen`]: true
         });
     };
+
+    openRemoveSkillModal = (index, name, level) => {
+        this.openModal("removeSkill");
+        this.setState({
+            selectedSkillIndex: index,
+            selectedSkillLevel: level,
+            selectedSkillName: name
+        });
+    }
+
+    openUpdateSkillModal = (index, name, level) => {
+        this.openModal("updateSkill");
+        this.setState({
+            selectedSkillIndex: index,
+            selectedSkillLevel: level,
+            selectedSkillName: name
+        });
+    }
+
+    updateSkill = () => {
+        this.setState({
+            formLoading: true
+        });
+
+        setTimeout(() => {
+            let n = JSON.parse(JSON.stringify(this.state.skills));
+            n.splice(this.state.selectedSkillIndex, 1, { name: this.state.selectedSkillName, level: this.state.proficencyOption });
+            this.setState({
+                skills: n,
+                formLoading: false,
+                updateSkillIsOpen: false,
+            });
+            Toast.make(
+                "success",
+                "Successful update",
+                "Your skills were successfully updated."
+            );
+        }, 1000);
+    }
 
     render() {
         return (
@@ -481,15 +528,11 @@ class Profile extends Component {
                                                     <Grid.Column>
                                                         <Button
                                                             icon
-                                                            onClick={() => {
-                                                                this.openModal(
-                                                                    "updateProfile"
-                                                                );
-                                                            }}
+                                                            onClick={() => this.openModal("updateProfile")}
                                                             color="teal"
                                                             labelPosition="left"
                                                         >
-                                                            <Icon name="edit" />
+                                                            <Icon name="edit"/>
                                                             Update profile
                                                         </Button>
                                                     </Grid.Column>
@@ -553,16 +596,16 @@ class Profile extends Component {
                                                         </Card.Content>
                                                         <Card.Content extra>
                                                             <Button.Group fluid>
-                                                                <Button color="teal">
+                                                                <Button color="teal" 
+                                                                    onClick={() => { this.openUpdateSkillModal(i, skill.name, skill.level) }}
+                                                                >
                                                                     Edit
                                                                 </Button>
                                                                 <Button.Or />
                                                                 <Button
                                                                     color="red"
                                                                     onClick={() => {
-                                                                        this.openModal(
-                                                                            "removeSkill"
-                                                                        );
+                                                                        this.openRemoveSkillModal(i, skill.name, skill.level)
                                                                     }}
                                                                 >
                                                                     Delete
@@ -710,6 +753,95 @@ class Profile extends Component {
                                                 onClick={this.addSkill}
                                             >
                                                 Add
+                                            </Button>
+                                        </Button.Group>
+                                    </Modal.Actions>
+                                </Modal>
+                            </TransitionablePortal>
+                            {/* Update skill */}
+                            <TransitionablePortal
+                                open={this.state.updateSkillIsOpen}
+                                transition={{
+                                    animation: "scale",
+                                    duration: 300
+                                }}
+                            >
+                                <Modal
+                                    closeIcon
+                                    size="small"
+                                    onClose={() => this.closeModal("updateSkill")}
+                                    open={this.state.updateSkillIsOpen}
+                                >
+                                    <Header icon="edit" content="Update your skills" />
+                                    <Modal.Content>
+                                        <Form loading={this.state.formLoading}>
+                                            <Form.Field>
+                                                <label>Skill</label>
+                                                <Dropdown
+                                                    placeholder="Select a skill"
+                                                    fluid
+                                                    search
+                                                    clearable
+                                                    selection
+                                                    error={
+                                                        this.state.skillError
+                                                    }
+                                                    allowAdditions
+                                                    onAddItem={
+                                                        this.handleAddition
+                                                    }
+                                                    value={
+                                                        this.state.selectedSkillName
+                                                    }
+                                                    options={
+                                                        this.state.skillOptions
+                                                    }
+                                                    onChange={
+                                                        this.handleSkillChange
+                                                    }
+                                                />
+                                            </Form.Field>
+                                            <Form.Field>
+                                                <label>Proficiency level</label>
+                                                <Dropdown
+                                                    placeholder="Select a proficiency level"
+                                                    fluid
+                                                    selection
+                                                    error={
+                                                        this.state
+                                                            .proficencyError
+                                                    }
+                                                    value={
+                                                        this.state.selectedSkillLevel
+                                                    }
+                                                    options={
+                                                        this.state
+                                                            .proficencyOptions
+                                                    }
+                                                    onChange={
+                                                        this
+                                                            .handleproficencyChange
+                                                    }
+                                                />
+                                            </Form.Field>
+                                        </Form>
+                                    </Modal.Content>
+                                    <Modal.Actions>
+                                        <Button.Group>
+                                            <Button
+                                                onClick={() =>
+                                                    this.closeModal("updateSkill")
+                                                }
+                                            >
+                                                Cancel
+                                            </Button>
+                                            <Button.Or />
+                                            <Button
+                                                positive
+                                                loading={this.state.formLoading}
+                                                onClick={this.updateSkill}
+                                            >
+                                                Update
                                             </Button>
                                         </Button.Group>
                                     </Modal.Actions>

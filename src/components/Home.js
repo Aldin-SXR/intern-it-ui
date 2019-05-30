@@ -102,7 +102,7 @@ class Home extends Component {
                                 <Header.Content>
                                     Dashboard
                                     <Header.Subheader>
-                                        The most recent intern results.
+                                        An overview of the most recent intern results.
                                     </Header.Subheader>
                                 </Header.Content>
                             </Header>
@@ -127,7 +127,7 @@ class Home extends Component {
                                             Name
                                         </Table.HeaderCell>
                                         <Table.HeaderCell>
-                                            Score
+                                            Skill Points
                                         </Table.HeaderCell>
                                         <Table.HeaderCell>
                                             Rating
@@ -242,7 +242,7 @@ class Home extends Component {
                                                 <Feed.Summary>
                                                     <a>Lena Bee</a> completed
                                                     the
-                                                    <a>Complete HTML</a> course.
+                                                                                                        <a> Complete HTML</a> course.
                                                 </Feed.Summary>
                                             </Feed.Content>
                                         </Feed.Event>

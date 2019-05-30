@@ -8,9 +8,14 @@ import {
     Divider,
     Form,
     Dropdown,
-    Button
+    Button,
+    Card,
+    List,
+    Image
 } from "semantic-ui-react";
 import { DatesRangeInput } from "semantic-ui-calendar-react";
+
+import faker from "faker";
 
 class BestOfTheBest extends Component {
     state = {
@@ -24,7 +29,10 @@ class BestOfTheBest extends Component {
         datesRange: "",
         profession: "it",
         pageSize: 5,
-        mobile: false
+        mobile: false,
+        overallBest: [],
+        skillPointBest: [],
+        offerBest: []
     };
 
     handleDateRangeChange = (event, { name, value }) => {
@@ -55,7 +63,23 @@ class BestOfTheBest extends Component {
 
     componentDidMount = () => {
         window.addEventListener("resize", this.updateDimensions);
+        this.generateData();
     };
+
+    generateData = () => {
+        let top1 = [];
+        for (let i = 0; i < this.state.pageSize; i++) {
+            top1[i] = {
+                name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+                avatar: faker.internet.avatar(),
+                company: faker.company.companyName(),
+                position: faker.name.jobTitle()
+            }
+        }
+        this.setState({
+            overallBest: top1
+        });
+    }
 
     render() {
         return (
@@ -75,50 +99,7 @@ class BestOfTheBest extends Component {
                             </Header>
                         </Grid.Column>
                     </Grid.Row>
-                    <Divider section />
-                    <Grid.Row columns="3">
-                        <Grid.Column>
-                            <Segment circular color="red">
-                                <Statistic horizontal size="small">
-                                    <Statistic.Value>
-                                        <Icon name="trophy" color="black" />
-                                        &nbsp;42
-                                    </Statistic.Value>
-                                    <Statistic.Label>
-                                        Your overall ranking
-                                    </Statistic.Label>
-                                </Statistic>
-                            </Segment>
-                        </Grid.Column>
-                        <Grid.Column>
-                            <Segment circular color="green">
-                                <Statistic horizontal size="small">
-                                    <Statistic.Value>
-                                        <Icon name="trophy" color="black" />
-                                        &nbsp;23
-                                    </Statistic.Value>
-                                    <Statistic.Label>
-                                        Ranking by skill points
-                                    </Statistic.Label>
-                                </Statistic>
-                            </Segment>
-                        </Grid.Column>
-                        <Grid.Column>
-                            <Segment circular color="blue">
-                                <Statistic horizontal size="small">
-                                    <Statistic.Value>
-                                        <Icon name="trophy" color="black" />
-                                        &nbsp;88
-                                    </Statistic.Value>
-                                    <Statistic.Label>
-                                        Ranking by job offers
-                                    </Statistic.Label>
-                                </Statistic>
-                            </Segment>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Divider section />
-                    <Grid.Row columns="4" style={{ height: "20em" }}>
+                    <Grid.Row columns="4">
                         <Grid.Column>
                             <Form>
                                 <Form.Field>
@@ -190,6 +171,125 @@ class BestOfTheBest extends Component {
                                     />
                                 </Form.Field>
                             </Form>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Divider section />
+                    <Grid.Row columns="1">
+                        <Grid.Column>
+                            <Header>
+                                <Header.Content>
+                                    Personal rankings
+                                </Header.Content>
+                            </Header>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row columns="4">
+                        <Grid.Column>
+                            <Segment circular color="red">
+                                <Statistic horizontal size="small">
+                                    <Statistic.Value>
+                                        <Icon name="trophy" color="black" />
+                                        &nbsp;42
+                                    </Statistic.Value>
+                                    <Statistic.Label>
+                                        Your overall ranking
+                                    </Statistic.Label>
+                                </Statistic>
+                            </Segment>
+                        </Grid.Column>
+                        <Grid.Column>
+                            <Segment circular color="green">
+                                <Statistic horizontal size="small">
+                                    <Statistic.Value>
+                                        <Icon name="trophy" color="black" />
+                                        &nbsp;23
+                                    </Statistic.Value>
+                                    <Statistic.Label>
+                                        Ranking by skill points
+                                    </Statistic.Label>
+                                </Statistic>
+                            </Segment>
+                        </Grid.Column>
+                        <Grid.Column>
+                            <Segment circular color="blue">
+                                <Statistic horizontal size="small">
+                                    <Statistic.Value>
+                                        <Icon name="trophy" color="black" />
+                                        &nbsp;88
+                                    </Statistic.Value>
+                                    <Statistic.Label>
+                                        Ranking by job offers
+                                    </Statistic.Label>
+                                </Statistic>
+                            </Segment>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Divider section />
+                    <Grid.Row columns="1">
+                        <Grid.Column>
+                            <Header>
+                                <Header.Content>
+                                    General rankings
+                                </Header.Content>
+                            </Header>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row columns="3">
+                        <Grid.Column tablet="4" computer="4">
+                            <Card fluid color="red">
+                                <Card.Content>
+                                    <Card.Header>
+                                        Overall Ranking
+                                    </Card.Header>
+                                    <Card.Meta>Ranking by skill points, job offers and other parameters.</Card.Meta>
+                                </Card.Content>
+                                <Card.Content>
+                                    <List ordered>
+                                        {
+                                            this.state.overallBest.map((user, i) => (
+                                                <List.Item key={i}>
+                                                    <Image avatar src={user.avatar} />
+                                                    <List.Content>
+                                                        <List.Header as='a'>{user.name}</List.Header>
+                                                        <List.Description style={{ color: "gray" }}>
+                                                            {user.company}
+                                                        </List.Description>
+                                                        <List.Description>
+                                                            {user.position}
+                                                        </List.Description>
+                                                    </List.Content>
+                                                </List.Item>
+                                            ))
+                                        }
+                                    </List>
+                                </Card.Content>
+                            </Card>
+                        </Grid.Column>
+                        <Grid.Column tablet="4" computer="4">
+                            <Card fluid color="green">
+                                <Card.Content>
+                                    <Card.Header>
+                                        Ranking by Skill Points
+                                    </Card.Header>
+                                    <Card.Meta>Ranking by the amount of gained and utilized Skill Points.</Card.Meta>
+                                </Card.Content>
+                                <Card.Content>
+
+                                </Card.Content>
+                            </Card>
+                        </Grid.Column>
+                        <Grid.Column tablet="4" computer="4">
+                            <Card fluid color="blue">
+                                <Card.Content>
+                                    <Card.Header>
+                                        Ranking by Job Offers
+                                    </Card.Header>
+                                    <Card.Meta>Ranking by the number of received job offers.</Card.Meta>
+                                </Card.Content>
+                                <Card.Content>
+
+                                </Card.Content>
+                            </Card>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

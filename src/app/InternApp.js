@@ -295,7 +295,7 @@ class AdminApp extends Component {
                             onClick={() => this.handleRouteChange("home")}
                         >
                             <Icon name="home" />
-                            Home
+                            Dashboard
                         </Menu.Item>
                         <Menu.Item
                             as="a"
