@@ -336,7 +336,6 @@ class BestOfTheBest extends Component {
                                         )}
                                     </List>
                                 </Card.Content>
-                                <Card.Content />
                             </Card>
                         </Grid.Column>
                         <Grid.Column tablet="4" computer="4">
@@ -377,7 +376,6 @@ class BestOfTheBest extends Component {
                                         ))}
                                     </List>
                                 </Card.Content>
-                                <Card.Content />
                             </Card>
                         </Grid.Column>
                     </Grid.Row>

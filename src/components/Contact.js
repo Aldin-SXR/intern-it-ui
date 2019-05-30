@@ -13,6 +13,7 @@ import {
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 
 import * as Toast from "../utils/toaster";
+import Validator from "../utils/validationUtils";
 
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -54,6 +55,86 @@ class Contact extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
+        if (!Validator.validateField(this.state.formData.name)) {
+            Toast.make(
+                "error",
+                "Empty field",
+                "Please enter your name."
+            );
+            this.setState({
+                emailError: true
+            })
+            return;
+        } else {
+            this.setState({
+                emailError: false
+            })
+        }
+
+        if (!Validator.validateField(this.state.formData.phone_number)) {
+            Toast.make(
+                "error",
+                "Empty field",
+                "Please enter your phone number."
+            );
+            this.setState({
+                emailError: true
+            })
+            return;
+        } else {
+            this.setState({
+                emailError: false
+            })
+        }
+
+        if (!Validator.validateField(this.state.formData.email_address)) {
+            Toast.make(
+                "error",
+                "Empty field",
+                "Please enter your e-mail address."
+            );
+            this.setState({
+                emailError: true
+            })
+            return;
+        } else {
+            this.setState({
+                emailError: false
+            })
+        }
+
+        if (!Validator.validateEmail(this.state.formData.email_address)) {
+            Toast.make(
+                "error",
+                "Empty field",
+                "Please enter a valid e-mail address."
+            );
+            this.setState({
+                emailError: true
+            })
+            return;
+        } else {
+            this.setState({
+                emailError: false
+            })
+        }
+
+        if (!Validator.validateField(this.state.formData.message)) {
+            Toast.make(
+                "error",
+                "Empty field",
+                "Please enter your message."
+            );
+            this.setState({
+                emailError: true
+            })
+            return;
+        } else {
+            this.setState({
+                emailError: false
+            })
+        }
+
         this.setState(
             {
                 loading: true
@@ -140,6 +221,7 @@ class Contact extends Component {
                                         <Form.Input
                                             fluid
                                             icon="phone"
+                                            type="phone"
                                             name="phone_number"
                                             iconPosition="left"
                                             placeholder="Phone number"

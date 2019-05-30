@@ -27,9 +27,6 @@ import About from "./About";
 import * as Toast from "../utils/toaster";
 import Validator from "../utils/validationUtils";
 
-// Heads up!
-// We using React Static to prerender our docs with server side rendering, this is a quite simple solution.
-// For more advanced usage please check Responsive docs under the "Usage" section.
 const getWidth = () => {
     const isSSR = typeof window === "undefined";
 
@@ -37,9 +34,6 @@ const getWidth = () => {
 };
 
 /* eslint-disable react/no-multi-comp */
-/* Heads up! HomepageHeading uses inline styling, however it's not the best practice. Use CSS or styled components for
- * such things.
- */
 const HomepageHeading = ({ mobile, setActive }) => (
     <Container text>
         <Header
